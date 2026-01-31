@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import './Collections.css'
 
 // Extended mock data
@@ -80,7 +80,21 @@ const categories = ['All', 'Outerwear', 'Jeans', 'Shirts', 'Bottoms', 'Essential
 
 const Collections = ({ addToCart }) => {
     const [selectedCategory, setSelectedCategory] = useState('All')
-    const [searchQuery, setSearchQuery] = useState('')
+    const [searchParams, setSearchParams] = useSearchParams()
+    const queryParam = searchParams.get('q') || ''
+    const [searchQuery, setSearchQuery] = useState(queryParam)
+
+    // Sync state with URL search params
+    useEffect(() => {
+        setSearchQuery(queryParam)
+    }, [queryParam])
+
+    const handleSearchChange = (e) => {
+        const val = e.target.value
+        setSearchQuery(val)
+        // Update URL to keep it in sync
+        setSearchParams(val ? { q: val } : {})
+    }
 
     const filteredProducts = allProducts.filter(product => {
         const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory
@@ -101,7 +115,7 @@ const Collections = ({ addToCart }) => {
                         type="text"
                         placeholder="Search items..."
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={handleSearchChange}
                     />
                     <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 </div>

@@ -1,17 +1,46 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import './Header.css'
 
 const Header = ({ cartCount, toggleCart }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isSearchOpen, setIsSearchOpen] = useState(false)
+    const [searchQuery, setSearchQuery] = useState('')
+    const navigate = useNavigate()
+    const searchInputRef = useRef(null)
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen)
     }
 
+    const toggleSearch = () => {
+        setIsSearchOpen(!isSearchOpen)
+        if (!isSearchOpen) {
+            setTimeout(() => searchInputRef.current?.focus(), 100)
+        }
+    }
+
+    const handleSearch = (e) => {
+        e.preventDefault()
+        if (searchQuery.trim()) {
+            navigate(`/collections?q=${encodeURIComponent(searchQuery.trim())}`)
+            setSearchQuery('')
+            setIsSearchOpen(false)
+        }
+    }
+
+    // Close search on escape key
+    useEffect(() => {
+        const handleEsc = (event) => {
+            if (event.key === 'Escape') setIsSearchOpen(false)
+        }
+        window.addEventListener('keydown', handleEsc)
+        return () => window.removeEventListener('keydown', handleEsc)
+    }, [])
+
     return (
         <header className="header">
-            <div className="logo" onClick={() => window.location.href = '/'}>MMBM</div>
+            <div className="logo" onClick={() => navigate('/')}>MMBM</div>
 
             <nav className={`nav ${isMenuOpen ? 'active' : ''}`}>
                 <div className="mobile-nav-header">
@@ -41,8 +70,24 @@ const Header = ({ cartCount, toggleCart }) => {
                 </div>
             </nav>
 
+            <div className={`search-container ${isSearchOpen ? 'active' : ''}`}>
+                <form onSubmit={handleSearch}>
+                    <input
+                        ref={searchInputRef}
+                        type="text"
+                        placeholder="Search products..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <button type="submit" className="search-submit">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                </form>
+                <button className="search-close" onClick={() => setIsSearchOpen(false)}>×</button>
+            </div>
+
             <div className="header-actions">
-                <button className="icon-btn search-btn" aria-label="Search">
+                <button className="icon-btn search-btn" aria-label="Search" onClick={toggleSearch}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 </button>
                 <button className="icon-btn cart-btn" aria-label="Cart" onClick={toggleCart}>
