@@ -6,6 +6,7 @@ import ProductGrid from './components/ProductGrid'
 import Footer from './components/Footer'
 import Collections from './pages/Collections'
 import FeaturedCategories from './components/FeaturedCategories'
+import CartDrawer from './components/CartDrawer'
 import './index.css'
 
 function App() {

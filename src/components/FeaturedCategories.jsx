@@ -12,7 +12,7 @@ const categories = [
     {
         id: 2,
         title: 'Premium Outerwear',
-        image: 'https://images.unsplash.com/photo-1591047139829-d91aec369a79?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80',
         link: '/collections?category=Outerwear',
         size: 'small'
     },
