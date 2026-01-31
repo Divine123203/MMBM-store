@@ -5,7 +5,7 @@ import Hero from './components/Hero'
 import ProductGrid from './components/ProductGrid'
 import Footer from './components/Footer'
 import Collections from './pages/Collections'
-import CartDrawer from './components/CartDrawer'
+import FeaturedCategories from './components/FeaturedCategories'
 import './index.css'
 
 function App() {
@@ -33,6 +33,7 @@ function App() {
             <Route path="/" element={
               <>
                 <Hero />
+                <FeaturedCategories />
                 <ProductGrid addToCart={addToCart} />
               </>
             } />
