@@ -67,9 +67,10 @@
     transform: translateY(-2px);
 }
 
-.actions {
+.header-actions {
     display: flex;
     gap: 1.5rem;
+    align-items: center;
 }
 
 .icon-btn {
@@ -148,6 +149,10 @@
 }
 
 @media (max-width: 768px) {
+    .header-actions {
+        display: contents;
+    }
+
     .mobile-menu-btn {
         display: block;
     }
