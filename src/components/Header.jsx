@@ -54,7 +54,7 @@ const Header = ({ cartCount, toggleCart }) => {
                     <li style={{ "--i": 1 }}><Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
                     <li style={{ "--i": 2 }}><Link to="/collections" onClick={() => setIsMenuOpen(false)}>Shop</Link></li>
                     <li style={{ "--i": 3 }}><Link to="/collections" onClick={() => setIsMenuOpen(false)}>Collections</Link></li>
-                    <li style={{ "--i": 4 }}><a href="#about" onClick={() => setIsMenuOpen(false)}>About</a></li>
+                    <li style={{ "--i": 4 }}><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
                 </ul>
 
                 <div className="mobile-nav-footer">

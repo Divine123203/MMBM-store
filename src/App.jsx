@@ -12,6 +12,7 @@ import Ticker from './components/Ticker'
 import Testimonials from './components/Testimonials'
 import Newsletter from './components/Newsletter'
 import CartDrawer from './components/CartDrawer'
+import About from './pages/About'
 import './index.css'
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
               </>
             } />
             <Route path="/collections" element={<Collections addToCart={addToCart} />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </main>
         <Footer />
