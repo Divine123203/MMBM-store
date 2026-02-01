@@ -16,6 +16,7 @@ import CartDrawer from './components/CartDrawer'
 const About = lazy(() => import('./pages/About'))
 const Shop = lazy(() => import('./pages/Shop'))
 const CollectionsLanding = lazy(() => import('./pages/CollectionsLanding'))
+const Contact = lazy(() => import('./pages/Contact'))
 
 // Premium loading fallback
 const PageLoader = () => (
@@ -84,6 +85,7 @@ function App() {
               <Route path="/shop" element={<Shop addToCart={addToCart} />} />
               <Route path="/collections" element={<CollectionsLanding />} />
               <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
             </Routes>
           </Suspense>
         </main>
