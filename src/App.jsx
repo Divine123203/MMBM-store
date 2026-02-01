@@ -11,12 +11,14 @@ import Ticker from './components/Ticker'
 import Testimonials from './components/Testimonials'
 import Newsletter from './components/Newsletter'
 import CartDrawer from './components/CartDrawer'
+import ScrollToTop from './components/ScrollToTop'
 
 // Lazy load pages for performance
 const About = lazy(() => import('./pages/About'))
 const Shop = lazy(() => import('./pages/Shop'))
 const CollectionsLanding = lazy(() => import('./pages/CollectionsLanding'))
 const Contact = lazy(() => import('./pages/Contact'))
+const Login = lazy(() => import('./pages/Login'))
 
 // Premium loading fallback
 const PageLoader = () => (
@@ -59,6 +61,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <div className="app">
         <Header cartCount={cartCount} toggleCart={toggleCart} />
         <CartDrawer
@@ -86,6 +89,7 @@ function App() {
               <Route path="/collections" element={<CollectionsLanding />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
             </Routes>
           </Suspense>
         </main>
