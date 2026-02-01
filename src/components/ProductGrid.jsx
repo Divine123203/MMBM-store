@@ -1,3 +1,4 @@
+import ScrollReveal from './ScrollReveal'
 import './ProductGrid.css'
 
 const products = [
@@ -34,14 +35,21 @@ const products = [
 const ProductGrid = ({ addToCart }) => {
     return (
         <section className="product-section" id="shop">
-            <div className="section-header">
-                <h2 className="section-title">Latest Drops</h2>
-                <div className="section-line"></div>
-            </div>
+            <ScrollReveal>
+                <div className="section-header">
+                    <h2 className="section-title">Latest Drops</h2>
+                    <div className="section-line"></div>
+                </div>
+            </ScrollReveal>
 
             <div className="grid-container">
-                {products.map(product => (
-                    <div key={product.id} className="product-card">
+                {products.map((product, index) => (
+                    <ScrollReveal
+                        key={product.id}
+                        delay={index * 0.1}
+                        variant="fade-up"
+                        className="product-card"
+                    >
                         <div className="image-wrapper">
                             <img src={product.image} alt={product.name} />
                             <button className="quick-add-btn" onClick={() => addToCart(product)}>Add to Cart</button>
@@ -51,7 +59,7 @@ const ProductGrid = ({ addToCart }) => {
                             <h3 className="product-name">{product.name}</h3>
                             <p className="product-price">{product.price}</p>
                         </div>
-                    </div>
+                    </ScrollReveal>
                 ))}
             </div>
         </section>

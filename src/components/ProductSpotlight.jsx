@@ -1,3 +1,4 @@
+import ScrollReveal from './ScrollReveal'
 import './ProductSpotlight.css'
 
 const ProductSpotlight = ({ addToCart }) => {
@@ -18,36 +19,44 @@ const ProductSpotlight = ({ addToCart }) => {
     return (
         <section className="product-spotlight">
             <div className="spotlight-container">
-                <div className="spotlight-image-side">
+                <ScrollReveal variant="fade-right" className="spotlight-image-side">
                     <img src={spotlightProduct.image} alt={spotlightProduct.name} />
                     <div className="image-overlay-glow"></div>
-                </div>
+                </ScrollReveal>
 
                 <div className="spotlight-content-side">
-                    <div className="spotlight-label">Featured Piece</div>
-                    <h2 className="spotlight-title">{spotlightProduct.name}</h2>
-                    <p className="spotlight-price">{spotlightProduct.price}</p>
+                    <ScrollReveal variant="fade-left">
+                        <div className="spotlight-label">Featured Piece</div>
+                        <h2 className="spotlight-title">{spotlightProduct.name}</h2>
+                        <p className="spotlight-price">{spotlightProduct.price}</p>
+                    </ScrollReveal>
 
                     <div className="spotlight-specs">
                         <h3>Technical Specifications</h3>
                         <ul>
                             {spotlightProduct.specs.map((spec, index) => (
-                                <li key={index}>
-                                    <span className="spec-dot"></span>
-                                    {spec}
-                                </li>
+                                <ScrollReveal key={index} variant="fade-left" delay={0.1 + index * 0.1}>
+                                    <li>
+                                        <span className="spec-dot"></span>
+                                        {spec}
+                                    </li>
+                                </ScrollReveal>
                             ))}
                         </ul>
                     </div>
 
-                    <button
-                        className="spotlight-add-btn"
-                        onClick={() => addToCart(spotlightProduct)}
-                    >
-                        Add to Cart
-                    </button>
+                    <ScrollReveal variant="scale-up" delay={0.5}>
+                        <button
+                            className="spotlight-add-btn"
+                            onClick={() => addToCart(spotlightProduct)}
+                        >
+                            Add to Cart
+                        </button>
+                    </ScrollReveal>
 
-                    <div className="spotlight-bg-text">NOIR</div>
+                    <ScrollReveal variant="fade-up" delay={0.8} className="spotlight-bg-text">
+                        NOIR
+                    </ScrollReveal>
                 </div>
             </div>
         </section>

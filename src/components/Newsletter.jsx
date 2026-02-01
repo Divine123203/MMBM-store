@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import ScrollReveal from './ScrollReveal'
 import './Newsletter.css'
 
 const Newsletter = () => {
@@ -20,7 +21,7 @@ const Newsletter = () => {
     return (
         <section className="newsletter">
             <div className="newsletter-container">
-                <div className="newsletter-box">
+                <ScrollReveal variant="scale-up" className="newsletter-box">
                     <div className="newsletter-header">
                         <span className="newsletter-tag">Exclusive Access</span>
                         <h2 className="newsletter-title">Join The Vault</h2>
@@ -52,7 +53,7 @@ const Newsletter = () => {
                             <p className="privacy-note">By joining, you agree to our privacy policy.</p>
                         </form>
                     )}
-                </div>
+                </ScrollReveal>
             </div>
             <div className="vault-bg-accent"></div>
         </section>

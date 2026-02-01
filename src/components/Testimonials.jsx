@@ -1,3 +1,4 @@
+import ScrollReveal from './ScrollReveal'
 import './Testimonials.css'
 
 const Testimonials = () => {
@@ -25,22 +26,29 @@ const Testimonials = () => {
     return (
         <section className="testimonials">
             <div className="testimonials-container">
-                <div className="testimonials-header">
-                    <span className="testimonials-tag">Community</span>
-                    <h2 className="testimonials-title">The Verdict</h2>
-                    <div className="section-divider"></div>
-                </div>
+                <ScrollReveal>
+                    <div className="testimonials-header">
+                        <span className="testimonials-tag">Community</span>
+                        <h2 className="testimonials-title">The Verdict</h2>
+                        <div className="section-divider"></div>
+                    </div>
+                </ScrollReveal>
 
                 <div className="testimonials-grid">
-                    {testimonials.map((t) => (
-                        <div key={t.id} className="testimonial-card">
+                    {testimonials.map((t, index) => (
+                        <ScrollReveal
+                            key={t.id}
+                            delay={index * 0.2}
+                            variant="fade-up"
+                            className="testimonial-card"
+                        >
                             <div className="quote-icon">"</div>
                             <p className="testimonial-quote">{t.quote}</p>
                             <div className="testimonial-footer">
                                 <span className="testimonial-author">{t.author}</span>
                                 <span className="testimonial-role">{t.role}</span>
                             </div>
-                        </div>
+                        </ScrollReveal>
                     ))}
                 </div>
             </div>
