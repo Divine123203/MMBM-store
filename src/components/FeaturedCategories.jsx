@@ -45,11 +45,13 @@ const FeaturedCategories = () => {
                         className={`category-card ${category.size}`}
                     >
                         <Link to={category.link}>
-                            <div className="card-image">
+                            <div className="card-image img-placeholder">
                                 <img
                                     src={`${category.image}&w=800&q=80&auto=format`}
                                     alt={category.title}
-                                    loading="lazy"
+                                    loading="eager"
+                                    className="img-reveal"
+                                    onLoad={(e) => e.target.classList.add('loaded')}
                                 />
                                 <div className="overlay"></div>
                             </div>

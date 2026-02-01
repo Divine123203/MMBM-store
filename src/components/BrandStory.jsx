@@ -42,18 +42,22 @@ const BrandStory = () => {
 
                 <ScrollReveal variant="fade-left" className="brand-story-image">
                     <div className="image-stack">
-                        <div className="image-main">
+                        <div className="image-main img-placeholder">
                             <img
                                 src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=800&q=80"
                                 alt="Brand Vision"
                                 loading="lazy"
+                                className="img-reveal"
+                                onLoad={(e) => e.target.classList.add('loaded')}
                             />
                         </div>
-                        <ScrollReveal variant="scale-up" delay={0.5} className="image-secondary">
+                        <ScrollReveal variant="scale-up" delay={0.5} className="image-secondary img-placeholder">
                             <img
                                 src="https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=400&q=80"
                                 alt="Detailing"
                                 loading="lazy"
+                                className="img-reveal"
+                                onLoad={(e) => e.target.classList.add('loaded')}
                             />
                         </ScrollReveal>
                     </div>

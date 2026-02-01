@@ -45,8 +45,14 @@ const CollectionsLanding = () => {
             <section className="collections-story-list">
                 {collections.map((col, index) => (
                     <div key={col.id} className={`collection-story-item ${index % 2 === 1 ? 'reverse' : ''}`}>
-                        <div className="story-image">
-                            <img src={`${col.image}&w=1200&q=80&auto=format`} alt={col.title} loading="lazy" />
+                        <div className="story-image img-placeholder">
+                            <img
+                                src={`${col.image}&w=1200&q=80&auto=format`}
+                                alt={col.title}
+                                loading={index === 0 ? "eager" : "lazy"}
+                                className="img-reveal"
+                                onLoad={(e) => e.target.classList.add('loaded')}
+                            />
                             <div className="image-accent-text">{col.accent}</div>
                         </div>
                         <div className="story-content">

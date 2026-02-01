@@ -171,11 +171,13 @@ const Shop = ({ addToCart }) => {
                         <div className="luxury-grid">
                             {filteredProducts.map(product => (
                                 <div key={product.id} className="premium-card">
-                                    <div className="card-image-area">
+                                    <div className="card-image-area img-placeholder">
                                         <img
                                             src={`${product.image}&w=600&q=80&auto=format`}
                                             alt={product.name}
                                             loading="lazy"
+                                            className="img-reveal"
+                                            onLoad={(e) => e.target.classList.add('loaded')}
                                         />
                                         <div className="card-actions">
                                             <button className="btn-quick-add" onClick={() => addToCart(product)}>

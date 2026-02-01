@@ -23,7 +23,10 @@ const ProductSpotlight = ({ addToCart }) => {
                     <img
                         src={`${spotlightProduct.image}&w=1200&q=85&auto=format`}
                         alt={spotlightProduct.name}
-                        loading="lazy"
+                        loading="eager"
+                        fetchPriority="high"
+                        className="img-reveal"
+                        onLoad={(e) => e.target.classList.add('loaded')}
                     />
                     <div className="image-overlay-glow"></div>
                 </ScrollReveal>
