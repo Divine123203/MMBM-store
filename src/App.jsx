@@ -23,6 +23,12 @@ function App() {
     setIsCartOpen(true) // Open cart when item is added
   }
 
+  const removeFromCart = (index) => {
+    const newCart = [...cart]
+    newCart.splice(index, 1)
+    setCart(newCart)
+  }
+
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen)
   }
@@ -33,7 +39,12 @@ function App() {
     <Router>
       <div className="app">
         <Header cartCount={cartCount} toggleCart={toggleCart} />
-        <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} />
+        <CartDrawer
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          cart={cart}
+          removeFromCart={removeFromCart}
+        />
         <main>
           <Routes>
             <Route path="/" element={
