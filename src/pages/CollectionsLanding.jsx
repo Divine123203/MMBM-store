@@ -46,7 +46,7 @@ const CollectionsLanding = () => {
                 {collections.map((col, index) => (
                     <div key={col.id} className={`collection-story-item ${index % 2 === 1 ? 'reverse' : ''}`}>
                         <div className="story-image">
-                            <img src={col.image} alt={col.title} />
+                            <img src={`${col.image}&w=1200&q=80&auto=format`} alt={col.title} loading="lazy" />
                             <div className="image-accent-text">{col.accent}</div>
                         </div>
                         <div className="story-content">

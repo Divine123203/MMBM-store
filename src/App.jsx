@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Hero from './components/Hero'
@@ -11,9 +11,28 @@ import Ticker from './components/Ticker'
 import Testimonials from './components/Testimonials'
 import Newsletter from './components/Newsletter'
 import CartDrawer from './components/CartDrawer'
-import About from './pages/About'
-import Shop from './pages/Shop'
-import CollectionsLanding from './pages/CollectionsLanding'
+
+// Lazy load pages for performance
+const About = lazy(() => import('./pages/About'))
+const Shop = lazy(() => import('./pages/Shop'))
+const CollectionsLanding = lazy(() => import('./pages/CollectionsLanding'))
+
+// Premium loading fallback
+const PageLoader = () => (
+  <div className="page-loader" style={{
+    height: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: '#050505',
+    color: 'var(--color-accent)',
+    fontSize: '0.9rem',
+    letterSpacing: '5px',
+    textTransform: 'uppercase'
+  }}>
+    <div className="loader-content">MMBM</div>
+  </div>
+)
 import './index.css'
 
 function App() {
@@ -48,23 +67,25 @@ function App() {
           removeFromCart={removeFromCart}
         />
         <main>
-          <Routes>
-            <Route path="/" element={
-              <>
-                <Hero />
-                <ProductSpotlight addToCart={addToCart} />
-                <FeaturedCategories />
-                <BrandStory />
-                <Ticker />
-                <ProductGrid addToCart={addToCart} />
-                <Testimonials />
-                <Newsletter />
-              </>
-            } />
-            <Route path="/shop" element={<Shop addToCart={addToCart} />} />
-            <Route path="/collections" element={<CollectionsLanding />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <Hero />
+                  <ProductSpotlight addToCart={addToCart} />
+                  <FeaturedCategories />
+                  <BrandStory />
+                  <Ticker />
+                  <ProductGrid addToCart={addToCart} />
+                  <Testimonials />
+                  <Newsletter />
+                </>
+              } />
+              <Route path="/shop" element={<Shop addToCart={addToCart} />} />
+              <Route path="/collections" element={<CollectionsLanding />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </Suspense>
         </main>
         <Footer />
       </div>

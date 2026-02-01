@@ -43,10 +43,18 @@ const BrandStory = () => {
                 <ScrollReveal variant="fade-left" className="brand-story-image">
                     <div className="image-stack">
                         <div className="image-main">
-                            <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=800&q=80" alt="Brand Vision" />
+                            <img
+                                src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=800&q=80"
+                                alt="Brand Vision"
+                                loading="lazy"
+                            />
                         </div>
                         <ScrollReveal variant="scale-up" delay={0.5} className="image-secondary">
-                            <img src="https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=400&q=80" alt="Detailing" />
+                            <img
+                                src="https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=400&q=80"
+                                alt="Detailing"
+                                loading="lazy"
+                            />
                         </ScrollReveal>
                     </div>
                     <div className="glass-accent"></div>

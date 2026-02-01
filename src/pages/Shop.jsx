@@ -172,7 +172,11 @@ const Shop = ({ addToCart }) => {
                             {filteredProducts.map(product => (
                                 <div key={product.id} className="premium-card">
                                     <div className="card-image-area">
-                                        <img src={product.image} alt={product.name} />
+                                        <img
+                                            src={`${product.image}&w=600&q=80&auto=format`}
+                                            alt={product.name}
+                                            loading="lazy"
+                                        />
                                         <div className="card-actions">
                                             <button className="btn-quick-add" onClick={() => addToCart(product)}>
                                                 <span>Add to Cart</span>

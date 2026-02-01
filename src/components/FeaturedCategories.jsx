@@ -46,7 +46,11 @@ const FeaturedCategories = () => {
                     >
                         <Link to={category.link}>
                             <div className="card-image">
-                                <img src={category.image} alt={category.title} />
+                                <img
+                                    src={`${category.image}&w=800&q=80&auto=format`}
+                                    alt={category.title}
+                                    loading="lazy"
+                                />
                                 <div className="overlay"></div>
                             </div>
                             <div className="card-content">

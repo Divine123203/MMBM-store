@@ -51,7 +51,11 @@ const ProductGrid = ({ addToCart }) => {
                         className="product-card"
                     >
                         <div className="image-wrapper">
-                            <img src={product.image} alt={product.name} />
+                            <img
+                                src={`${product.image}&w=600&q=80&auto=format`}
+                                alt={product.name}
+                                loading="lazy"
+                            />
                             <button className="quick-add-btn" onClick={() => addToCart(product)}>Add to Cart</button>
                         </div>
                         <div className="product-info">

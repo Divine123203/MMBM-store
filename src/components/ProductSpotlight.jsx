@@ -20,7 +20,11 @@ const ProductSpotlight = ({ addToCart }) => {
         <section className="product-spotlight">
             <div className="spotlight-container">
                 <ScrollReveal variant="fade-right" className="spotlight-image-side">
-                    <img src={spotlightProduct.image} alt={spotlightProduct.name} />
+                    <img
+                        src={`${spotlightProduct.image}&w=1200&q=85&auto=format`}
+                        alt={spotlightProduct.name}
+                        loading="lazy"
+                    />
                     <div className="image-overlay-glow"></div>
                 </ScrollReveal>
 
