@@ -7,7 +7,9 @@ import Footer from './components/Footer'
 import Collections from './pages/Collections'
 import FeaturedCategories from './components/FeaturedCategories'
 import BrandStory from './components/BrandStory'
+import ProductSpotlight from './components/ProductSpotlight'
 import Ticker from './components/Ticker'
+import Testimonials from './components/Testimonials'
 import Newsletter from './components/Newsletter'
 import CartDrawer from './components/CartDrawer'
 import './index.css'
@@ -37,10 +39,12 @@ function App() {
             <Route path="/" element={
               <>
                 <Hero />
+                <ProductSpotlight addToCart={addToCart} />
                 <FeaturedCategories />
                 <BrandStory />
                 <Ticker />
                 <ProductGrid addToCart={addToCart} />
+                <Testimonials />
                 <Newsletter />
               </>
             } />
