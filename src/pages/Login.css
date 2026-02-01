@@ -35,137 +35,162 @@
     z-index: 2;
     padding: 20px;
     width: 100%;
-    max-width: 480px;
+    max-width: 440px;
 }
 
 .login-glass-card {
-    background: rgba(10, 10, 10, 0.7);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid rgba(224, 170, 62, 0.15);
-    padding: 60px 50px;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(224, 170, 62, 0.3);
+    padding: 80px 40px 60px;
     border-radius: 4px;
     position: relative;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+    box-shadow:
+        0 40px 100px rgba(0, 0, 0, 0.9),
+        inset 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
 }
 
-/* Golden Ornaments */
-.card-ornament {
+.card-glaze {
     position: absolute;
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--color-accent);
-    opacity: 0.5;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(135deg,
+            transparent 0%,
+            transparent 45%,
+            rgba(255, 255, 255, 0.05) 50%,
+            transparent 55%,
+            transparent 100%);
+    pointer-events: none;
+    transform: rotate(25deg);
 }
 
-.top-left {
-    top: 15px;
-    left: 15px;
-    border-right: none;
-    border-bottom: none;
+/* New Corner Ornaments */
+.corner-ornament {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    color: var(--color-accent);
+    opacity: 0.8;
+    z-index: 5;
 }
 
-.top-right {
-    top: 15px;
-    right: 15px;
-    border-left: none;
-    border-bottom: none;
+.corner-ornament svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 5px var(--color-accent-glow));
 }
 
-.bottom-left {
-    bottom: 15px;
-    left: 15px;
-    border-right: none;
-    border-top: none;
+.n-top-left {
+    top: 10px;
+    left: 10px;
 }
 
-.bottom-right {
-    bottom: 15px;
-    right: 15px;
-    border-left: none;
-    border-top: none;
+.n-top-right {
+    top: 10px;
+    right: 10px;
+}
+
+.n-bottom-left {
+    bottom: 10px;
+    left: 10px;
+}
+
+.n-bottom-right {
+    bottom: 10px;
+    right: 10px;
 }
 
 .brand-identifier {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
 }
 
-.brand-identifier h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    letter-spacing: 12px;
+.serif-logo {
+    font-family: 'Cinzel', serif;
+    /* Falling back to Cinzel if available, or any serif */
+    font-size: 3rem;
+    font-weight: 400;
+    letter-spacing: 15px;
     color: var(--color-accent);
-    margin-bottom: 15px;
-}
-
-.gold-line {
-    height: 1px;
-    width: 60px;
-    background: var(--color-accent);
-    margin: 0 auto;
-    box-shadow: 0 0 10px var(--color-accent-glow);
+    background: linear-gradient(180deg, #f3d082 0%, #b38728 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(179, 135, 40, 0.3));
 }
 
 .form-wrapper h2 {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 5px;
-    color: var(--color-text-muted);
-    text-align: center;
-    margin-bottom: 45px;
+    display: none;
+    /* Hide for true minimal mockup look */
 }
 
 .input-group {
-    margin-bottom: 30px;
+    margin-bottom: 45px;
     position: relative;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: rgba(224, 170, 62, 0.7);
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-family: 'Cinzel', serif;
 }
 
 .input-group input {
     width: 100%;
     background: transparent;
     border: none;
-    color: white;
+    color: #fff;
     font-family: inherit;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    padding: 12px 0;
-    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    padding: 10px 0;
     outline: none;
 }
 
 .input-line {
     height: 1px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(224, 170, 62, 0.3);
     position: relative;
     transition: all 0.4s ease;
 }
 
 .input-group input:focus+.input-line {
     background: var(--color-accent);
-    box-shadow: 0 0 10px var(--color-accent-glow);
+    box-shadow: 0 0 15px var(--color-accent-glow);
 }
 
 .btn-noir {
     width: 100%;
-    padding: 18px;
-    background: transparent;
+    padding: 20px;
+    background: rgba(179, 135, 40, 0.05);
     border: 1px solid var(--color-accent);
     color: var(--color-accent);
-    font-family: inherit;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 5px;
     cursor: pointer;
     margin-top: 20px;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: inset 0 0 10px rgba(179, 135, 40, 0.1);
 }
 
 .btn-noir:hover {
     background: var(--color-accent);
     color: #000;
-    box-shadow: 0 0 30px var(--color-accent-glow);
+    box-shadow:
+        0 0 40px var(--color-accent-glow),
+        inset 0 0 10px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
 }
 
 .form-switch {

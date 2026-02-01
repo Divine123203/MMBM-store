@@ -18,20 +18,31 @@ const Login = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 >
-                    <div className="card-ornament top-left"></div>
-                    <div className="card-ornament top-right"></div>
-                    <div className="card-ornament bottom-left"></div>
-                    <div className="card-ornament bottom-right"></div>
+                    <div className="card-glaze"></div>
+
+                    {/* Intricate Corner Ornaments */}
+                    <div className="corner-ornament n-top-left">
+                        <svg viewBox="0 0 100 100"><path d="M10,10 Q50,10 50,50 L50,10 M10,10 Q10,50 50,50 L10,50" fill="none" stroke="currentColor" strokeWidth="0.5" /></svg>
+                    </div>
+                    <div className="corner-ornament n-top-right">
+                        <svg viewBox="0 0 100 100" style={{ transform: 'rotate(90deg)' }}><path d="M10,10 Q50,10 50,50 L50,10 M10,10 Q10,50 50,50 L10,50" fill="none" stroke="currentColor" strokeWidth="0.5" /></svg>
+                    </div>
+                    <div className="corner-ornament n-bottom-left">
+                        <svg viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)' }}><path d="M10,10 Q50,10 50,50 L50,10 M10,10 Q10,50 50,50 L10,50" fill="none" stroke="currentColor" strokeWidth="0.5" /></svg>
+                    </div>
+                    <div className="corner-ornament n-bottom-right">
+                        <svg viewBox="0 0 100 100" style={{ transform: 'rotate(180deg)' }}><path d="M10,10 Q50,10 50,50 L50,10 M10,10 Q10,50 50,50 L10,50" fill="none" stroke="currentColor" strokeWidth="0.5" /></svg>
+                    </div>
 
                     <div className="brand-identifier">
                         <motion.h1
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.5 }}
+                            className="serif-logo"
                         >
                             MMBM
                         </motion.h1>
-                        <div className="gold-line"></div>
                     </div>
 
                     <AnimatePresence mode="wait">
@@ -47,14 +58,16 @@ const Login = () => {
                                 <h2>Access The Vault</h2>
                                 <form className="noir-form" onSubmit={(e) => e.preventDefault()}>
                                     <div className="input-group">
-                                        <input type="email" required placeholder="EMAIL ADDRESS" />
+                                        <label>EMAIL</label>
+                                        <input type="email" required />
                                         <div className="input-line"></div>
                                     </div>
                                     <div className="input-group">
-                                        <input type="password" required placeholder="PASSWORD" />
+                                        <label>PASSWORD</label>
+                                        <input type="password" required />
                                         <div className="input-line"></div>
                                     </div>
-                                    <button type="submit" className="btn-noir">LOGIN</button>
+                                    <button type="submit" className="btn-noir">LOG IN</button>
                                 </form>
                                 <p className="form-switch">
                                     New to the brand? <span onClick={() => setIsLogin(false)}>Create Account</span>
@@ -72,15 +85,18 @@ const Login = () => {
                                 <h2>Join The Inner Circle</h2>
                                 <form className="noir-form" onSubmit={(e) => e.preventDefault()}>
                                     <div className="input-group">
-                                        <input type="text" required placeholder="FULL NAME" />
+                                        <label>FULL NAME</label>
+                                        <input type="text" required />
                                         <div className="input-line"></div>
                                     </div>
                                     <div className="input-group">
-                                        <input type="email" required placeholder="EMAIL ADDRESS" />
+                                        <label>EMAIL ADDRESS</label>
+                                        <input type="email" required />
                                         <div className="input-line"></div>
                                     </div>
                                     <div className="input-group">
-                                        <input type="password" required placeholder="PASSWORD" />
+                                        <label>PASSWORD</label>
+                                        <input type="password" required />
                                         <div className="input-line"></div>
                                     </div>
                                     <button type="submit" className="btn-noir">CREATE ACCOUNT</button>
