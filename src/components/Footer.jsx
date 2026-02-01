@@ -13,7 +13,7 @@ const Footer = () => {
                 <div className="footer-col">
                     <h4>Shop</h4>
                     <ul>
-                        <li><Link to="/collections">New Arrivals</Link></li>
+                        <li><Link to="/shop">New Arrivals</Link></li>
                         <li><Link to="/collections">Best Sellers</Link></li>
                         <li><Link to="/about">About Us</Link></li>
                     </ul>

@@ -4,7 +4,6 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import ProductGrid from './components/ProductGrid'
 import Footer from './components/Footer'
-import Collections from './pages/Collections'
 import FeaturedCategories from './components/FeaturedCategories'
 import BrandStory from './components/BrandStory'
 import ProductSpotlight from './components/ProductSpotlight'
@@ -13,6 +12,8 @@ import Testimonials from './components/Testimonials'
 import Newsletter from './components/Newsletter'
 import CartDrawer from './components/CartDrawer'
 import About from './pages/About'
+import Shop from './pages/Shop'
+import CollectionsLanding from './pages/CollectionsLanding'
 import './index.css'
 
 function App() {
@@ -60,7 +61,8 @@ function App() {
                 <Newsletter />
               </>
             } />
-            <Route path="/collections" element={<Collections addToCart={addToCart} />} />
+            <Route path="/shop" element={<Shop addToCart={addToCart} />} />
+            <Route path="/collections" element={<CollectionsLanding />} />
             <Route path="/about" element={<About />} />
           </Routes>
         </main>

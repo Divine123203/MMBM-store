@@ -23,7 +23,7 @@ const Header = ({ cartCount, toggleCart }) => {
     const handleSearch = (e) => {
         e.preventDefault()
         if (searchQuery.trim()) {
-            navigate(`/collections?q=${encodeURIComponent(searchQuery.trim())}`)
+            navigate(`/shop?q=${encodeURIComponent(searchQuery.trim())}`)
             setSearchQuery('')
             setIsSearchOpen(false)
         }
@@ -52,7 +52,7 @@ const Header = ({ cartCount, toggleCart }) => {
 
                 <ul className="nav-links">
                     <li style={{ "--i": 1 }}><Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
-                    <li style={{ "--i": 2 }}><Link to="/collections" onClick={() => setIsMenuOpen(false)}>Shop</Link></li>
+                    <li style={{ "--i": 2 }}><Link to="/shop" onClick={() => setIsMenuOpen(false)}>Shop</Link></li>
                     <li style={{ "--i": 3 }}><Link to="/collections" onClick={() => setIsMenuOpen(false)}>Collections</Link></li>
                     <li style={{ "--i": 4 }}><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
                 </ul>

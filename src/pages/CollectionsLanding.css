@@ -1,0 +1,234 @@
+.collections-landing {
+    background: #000;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Header Section */
+.collections-header-section {
+    padding: 10rem 0 5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.page-tag {
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.page-title {
+    font-size: 5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin-bottom: 2rem;
+}
+
+.page-intro {
+    font-size: 1.2rem;
+    color: var(--color-text-dim);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Story List */
+.collections-story-list {
+    padding: 5rem 0;
+}
+
+.collection-story-item {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 8rem;
+    align-items: center;
+    padding: 8rem 5%;
+    min-height: 80vh;
+}
+
+.collection-story-item.reverse {
+    grid-template-columns: 1fr 1.2fr;
+}
+
+.collection-story-item.reverse .story-image {
+    order: 2;
+}
+
+.story-image {
+    position: relative;
+    height: 100%;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+.story-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.collection-story-item:hover .story-image img {
+    transform: scale(1.05);
+}
+
+.image-accent-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 15vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.03);
+    z-index: 1;
+    pointer-events: none;
+    text-transform: uppercase;
+}
+
+.story-content {
+    position: relative;
+    z-index: 2;
+}
+
+.story-tag {
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.story-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    line-height: 1.1;
+}
+
+.story-description {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--color-text-dim);
+    margin-bottom: 3.5rem;
+}
+
+.btn-explore-drop {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-explore-drop svg {
+    transition: transform 0.3s ease;
+}
+
+.btn-explore-drop:hover {
+    color: var(--color-accent);
+}
+
+.btn-explore-drop:hover svg {
+    transform: translateX(10px);
+}
+
+/* Footer CTA */
+.collections-footer-cta {
+    padding: 10rem 5%;
+    background: linear-gradient(to top, rgba(163, 137, 85, 0.05), transparent);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.collections-footer-cta h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.btn-vault {
+    display: inline-block;
+    padding: 1.5rem 4rem;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    border-radius: 60px;
+    margin-top: 3rem;
+    transition: all 0.3s ease;
+}
+
+.btn-vault:hover {
+    background: var(--color-accent);
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+    .collection-story-item {
+        gap: 4rem;
+        padding: 6rem 5%;
+    }
+
+    .page-title {
+        font-size: 3.5rem;
+    }
+
+    .story-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .collections-header-section {
+        padding: 8rem 5% 4rem;
+    }
+
+    .collection-story-item {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        gap: 3rem;
+    }
+
+    .collection-story-item.reverse {
+        grid-template-columns: 1fr;
+    }
+
+    .collection-story-item.reverse .story-image {
+        order: 0;
+    }
+
+    .story-image {
+        height: 400px;
+    }
+
+    .page-title {
+        font-size: 2.8rem;
+    }
+}

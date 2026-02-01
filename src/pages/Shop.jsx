@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import './Collections.css'
+import './Shop.css'
 
 // Extended mock data
 const allProducts = [
@@ -78,13 +78,24 @@ const allProducts = [
 
 const categories = ['All', 'Outerwear', 'Jeans', 'Shirts', 'Bottoms', 'Essentials', 'Accessories']
 
-const Collections = ({ addToCart }) => {
+const Shop = ({ addToCart }) => {
     const [selectedCategory, setSelectedCategory] = useState('All')
     const [searchParams, setSearchParams] = useSearchParams()
+
+    // Check for both 'category' and 'q' from URL
     const queryParam = searchParams.get('q') || ''
+    const categoryParam = searchParams.get('category')
+
+    useEffect(() => {
+        if (categoryParam) {
+            setSelectedCategory(categoryParam)
+        } else {
+            setSelectedCategory('All')
+        }
+    }, [categoryParam])
+
     const [searchQuery, setSearchQuery] = useState(queryParam)
 
-    // Sync state with URL search params
     useEffect(() => {
         setSearchQuery(queryParam)
     }, [queryParam])
@@ -92,8 +103,10 @@ const Collections = ({ addToCart }) => {
     const handleSearchChange = (e) => {
         const val = e.target.value
         setSearchQuery(val)
-        // Update URL to keep it in sync
-        setSearchParams(val ? { q: val } : {})
+        const params = {}
+        if (val) params.q = val
+        if (selectedCategory !== 'All') params.category = selectedCategory
+        setSearchParams(params)
     }
 
     const filteredProducts = allProducts.filter(product => {
@@ -122,7 +135,13 @@ const Collections = ({ addToCart }) => {
                                     <button
                                         key={category}
                                         className={`filter-tab ${selectedCategory === category ? 'active' : ''}`}
-                                        onClick={() => setSelectedCategory(category)}
+                                        onClick={() => {
+                                            setSelectedCategory(category)
+                                            const params = {}
+                                            if (searchQuery) params.q = searchQuery
+                                            if (category !== 'All') params.category = category
+                                            setSearchParams(params)
+                                        }}
                                     >
                                         {category}
                                         {selectedCategory === category && <span className="tab-indicator"></span>}
@@ -182,4 +201,4 @@ const Collections = ({ addToCart }) => {
     )
 }
 
-export default Collections
+export default Shop
