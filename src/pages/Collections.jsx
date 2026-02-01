@@ -104,55 +104,79 @@ const Collections = ({ addToCart }) => {
 
     return (
         <div className="collections-page">
-            <div className="collections-header">
-                <h1>Our Collections</h1>
-                <p>Curated styles for the modern individual.</p>
-            </div>
-
-            <div className="filters-container">
-                <div className="search-bar">
-                    <input
-                        type="text"
-                        placeholder="Search items..."
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                    />
-                    <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                </div>
-
-                <div className="category-filters">
-                    {categories.map(category => (
-                        <button
-                            key={category}
-                            className={`filter-btn ${selectedCategory === category ? 'active' : ''}`}
-                            onClick={() => setSelectedCategory(category)}
-                        >
-                            {category}
-                        </button>
-                    ))}
+            <div className="collections-hero">
+                <div className="hero-overlay"></div>
+                <div className="hero-content">
+                    <span className="hero-tag">The Boutique</span>
+                    <h1 className="hero-title">Selected Collections</h1>
+                    <div className="hero-divider"></div>
                 </div>
             </div>
 
-            <div className="products-grid">
-                {filteredProducts.length > 0 ? (
-                    filteredProducts.map(product => (
-                        <div key={product.id} className="product-card">
-                            <div className="image-wrapper">
-                                <img src={product.image} alt={product.name} />
-                                <button className="quick-add-btn" onClick={() => addToCart(product)}>Add to Cart</button>
+            <div className="shop-interface">
+                <div className="filters-bar">
+                    <div className="container">
+                        <div className="filters-inner">
+                            <div className="category-scroll">
+                                {categories.map(category => (
+                                    <button
+                                        key={category}
+                                        className={`filter-tab ${selectedCategory === category ? 'active' : ''}`}
+                                        onClick={() => setSelectedCategory(category)}
+                                    >
+                                        {category}
+                                        {selectedCategory === category && <span className="tab-indicator"></span>}
+                                    </button>
+                                ))}
                             </div>
-                            <div className="product-info">
-                                <span className="product-category">{product.category}</span>
-                                <h3 className="product-name">{product.name}</h3>
-                                <p className="product-price">{product.price}</p>
+
+                            <div className="search-minimal">
+                                <input
+                                    type="text"
+                                    placeholder="Find your style..."
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                />
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                             </div>
                         </div>
-                    ))
-                ) : (
-                    <div className="no-results">
-                        <p>No items found matching your criteria.</p>
                     </div>
-                )}
+                </div>
+
+                <div className="products-section container">
+                    <div className="results-count">
+                        Showing {filteredProducts.length} {filteredProducts.length === 1 ? 'Product' : 'Products'}
+                    </div>
+
+                    {filteredProducts.length > 0 ? (
+                        <div className="luxury-grid">
+                            {filteredProducts.map(product => (
+                                <div key={product.id} className="premium-card">
+                                    <div className="card-image-area">
+                                        <img src={product.image} alt={product.name} />
+                                        <div className="card-actions">
+                                            <button className="btn-quick-add" onClick={() => addToCart(product)}>
+                                                <span>Add to Cart</span>
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="card-body">
+                                        <div className="card-meta">
+                                            <span className="card-cat">{product.category}</span>
+                                            <span className="card-price">{product.price}</span>
+                                        </div>
+                                        <h3 className="card-title">{product.name}</h3>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="no-results">
+                            <p>No items found matching your criteria.</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     )
