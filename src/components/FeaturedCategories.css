@@ -1,7 +1,9 @@
 .featured-categories {
-    padding: 6rem 5%;
-    max-width: 1400px;
+    padding: 6rem 0;
+    max-width: var(--container-max);
     margin: 0 auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
 }
 
 .section-header {

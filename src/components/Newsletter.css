@@ -1,12 +1,13 @@
 .newsletter {
-    padding: 10rem 5%;
+    padding: 10rem 0;
     position: relative;
     overflow: hidden;
     background: #000;
 }
 
 .newsletter-container {
-    max-width: 900px;
+    max-width: var(--container-max);
+    padding: 0 var(--container-padding);
     margin: 0 auto;
     position: relative;
     z-index: 2;

@@ -1,5 +1,9 @@
 .product-section {
-    padding: 5rem 10%;
+    padding: 5rem 0;
+    max-width: var(--container-max);
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+    margin: 0 auto;
     background-color: var(--color-bg);
 }
 

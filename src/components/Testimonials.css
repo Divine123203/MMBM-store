@@ -1,11 +1,12 @@
 .testimonials {
-    padding: 8rem 5%;
+    padding: 8rem 0;
     background: #050505;
     position: relative;
 }
 
 .testimonials-container {
-    max-width: 1200px;
+    max-width: var(--container-max);
+    padding: 0 var(--container-padding);
     margin: 0 auto;
 }
 

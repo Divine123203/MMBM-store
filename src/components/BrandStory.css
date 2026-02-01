@@ -1,11 +1,12 @@
 .brand-story {
-    padding: 8rem 5%;
+    padding: 8rem 0;
     background: #050505;
     overflow: hidden;
 }
 
 .brand-story-container {
-    max-width: 1200px;
+    max-width: var(--container-max);
+    padding: 0 var(--container-padding);
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1.2fr 1fr;

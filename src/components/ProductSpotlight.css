@@ -1,12 +1,13 @@
 .product-spotlight {
-    padding: 6rem 5%;
+    padding: 6rem 0;
     background: #000;
     overflow: hidden;
     position: relative;
 }
 
 .spotlight-container {
-    max-width: 1300px;
+    max-width: var(--container-max);
+    padding: 3rem var(--container-padding);
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1.1fr 1fr;
