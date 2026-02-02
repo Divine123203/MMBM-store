@@ -1,0 +1,233 @@
+.pdp-page {
+    background: #000;
+    min-height: 100vh;
+    padding-top: calc(var(--nav-height) + 4rem);
+    padding-bottom: 8rem;
+    color: #fff;
+}
+
+.pdp-container {
+    max-width: 1440px;
+}
+
+.pdp-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 6rem;
+    align-items: start;
+}
+
+/* Visuals */
+.pdp-image-wrap {
+    width: 100%;
+    aspect-ratio: 4/5;
+    border-radius: 32px;
+    overflow: hidden;
+    background: #0a0a0a;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+}
+
+.pdp-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Content */
+.pdp-header {
+    margin-bottom: 3rem;
+}
+
+.pdp-category {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--color-accent);
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.pdp-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin: 0 0 1rem 0;
+    line-height: 1;
+}
+
+.pdp-price {
+    font-size: 2rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.pdp-description {
+    margin-bottom: 4rem;
+}
+
+.pdp-description p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
+}
+
+.pdp-features {
+    list-style: none;
+    padding: 0;
+}
+
+.pdp-features li {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.pdp-features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--color-accent);
+    border-radius: 50%;
+}
+
+/* Actions */
+.pdp-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 4rem;
+    max-width: 400px;
+}
+
+.pdp-quantity label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
+    padding: 0.5rem;
+    width: fit-content;
+}
+
+.quantity-controls button {
+    background: none;
+    border: none;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-controls button:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.quantity-controls span {
+    font-size: 1.1rem;
+    font-weight: 800;
+    min-width: 40px;
+    text-align: center;
+}
+
+.pdp-add-btn {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 1.5rem;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pdp-add-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Footer benefits */
+.pdp-footer {
+    display: flex;
+    gap: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pdp-benefit {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pdp-benefit svg {
+    color: var(--color-accent);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .pdp-grid {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+
+    .pdp-visuals {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .pdp-content {
+        text-align: center;
+    }
+
+    .pdp-header {
+        margin-bottom: 2rem;
+    }
+
+    .pdp-quantity,
+    .quantity-controls {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pdp-actions {
+        max-width: none;
+    }
+
+    .pdp-footer {
+        justify-content: center;
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+    }
+}

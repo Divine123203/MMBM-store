@@ -1,69 +1,56 @@
+import { Link } from 'react-router-dom'
 import ScrollReveal from './ScrollReveal'
+import { allProducts } from '../data/products'
 import './ProductGrid.css'
 
-const products = [
-    {
-        id: 1,
-        name: 'Noir Edition Hoodie',
-        price: '$120.00',
-        image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80',
-        category: 'Outerwear'
-    },
-    {
-        id: 2,
-        name: 'Gold Accent Tee',
-        price: '$85.00',
-        image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=600&q=80',
-        category: 'Essentials'
-    },
-    {
-        id: 3,
-        name: 'Signature Cap',
-        price: '$45.00',
-        image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=600&q=80',
-        category: 'Accessories'
-    },
-    {
-        id: 4,
-        name: 'Urban Cargo Pants',
-        price: '$150.00',
-        image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=600&q=80',
-        category: 'Bottoms'
-    }
-]
+const products = allProducts.slice(0, 4) // Show first 4 on home
 
 const ProductGrid = ({ addToCart }) => {
     return (
-        <section className="product-section" id="shop">
+        <section className="home-shop-section" id="shop">
             <ScrollReveal>
-                <div className="section-header">
-                    <h2 className="section-title">Latest Drops</h2>
-                    <div className="section-line"></div>
+                <div className="home-shop-header">
+                    <h2 className="home-shop-title">Latest Arrivals</h2>
+                    <div className="home-shop-accent"></div>
                 </div>
             </ScrollReveal>
 
-            <div className="grid-container">
+            <div className="home-shop-grid">
                 {products.map((product, index) => (
                     <ScrollReveal
                         key={product.id}
                         delay={index * 0.1}
                         variant="fade-up"
-                        className="product-card"
+                        className="home-shop-item"
                     >
-                        <div className="image-wrapper img-placeholder">
-                            <img
-                                src={`${product.image}&w=600&q=80&auto=format`}
-                                alt={product.name}
-                                loading="lazy"
-                                className="img-reveal"
-                                onLoad={(e) => e.target.classList.add('loaded')}
-                            />
-                            <button className="quick-add-btn" onClick={() => addToCart(product)}>Add to Cart</button>
+                        <div className="item-visuals">
+                            <Link to={`/product/${product.id}`} className="item-link">
+                                <img
+                                    src={`${product.image}&w=600&q=80&auto=format`}
+                                    alt={product.name}
+                                    loading="lazy"
+                                    className="item-img img-reveal"
+                                    onLoad={(e) => e.target.classList.add('loaded')}
+                                />
+                            </Link>
+                            <button
+                                className="item-cta"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    addToCart(product);
+                                }}
+                            >
+                                + Add to Cart
+                            </button>
                         </div>
-                        <div className="product-info">
-                            <span className="product-category">{product.category}</span>
-                            <h3 className="product-name">{product.name}</h3>
-                            <p className="product-price">{product.price}</p>
+                        <div className="item-info">
+                            <Link to={`/product/${product.id}`} className="item-text-link">
+                                <div className="item-meta">
+                                    <span className="item-cat">{product.category}</span>
+                                    <span className="item-price">${typeof product.price === 'number' ? product.price.toFixed(2) : product.price.replace('$', '')}</span>
+                                </div>
+                                <h3 className="item-name">{product.name}</h3>
+                            </Link>
                         </div>
                     </ScrollReveal>
                 ))}

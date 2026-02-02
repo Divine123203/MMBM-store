@@ -19,6 +19,7 @@ const Shop = lazy(() => import('./pages/Shop'))
 const CollectionsLanding = lazy(() => import('./pages/CollectionsLanding'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Login = lazy(() => import('./pages/Login'))
+const ProductDetail = lazy(() => import('./pages/ProductDetail'))
 
 // Premium loading fallback
 const PageLoader = () => (
@@ -42,22 +43,35 @@ function App() {
   const [cart, setCart] = useState([])
   const [isCartOpen, setIsCartOpen] = useState(false)
 
-  const addToCart = (product) => {
-    setCart([...cart, product])
-    setIsCartOpen(true) // Open cart when item is added
+  const addToCart = (product, quantity = 1) => {
+    // Check if item already exists with same ID
+    const existingItemIndex = cart.findIndex(item => item.id === product.id)
+
+    if (existingItemIndex !== -1) {
+      const newCart = [...cart]
+      newCart[existingItemIndex].quantity += quantity
+      setCart(newCart)
+    } else {
+      setCart([...cart, { ...product, quantity }])
+    }
+
+    setIsCartOpen(true)
   }
 
-  const removeFromCart = (index) => {
-    const newCart = [...cart]
-    newCart.splice(index, 1)
-    setCart(newCart)
+  const removeFromCart = (id) => {
+    setCart(cart.filter(item => item.id !== id))
+  }
+
+  const updateQuantity = (id, newQuantity) => {
+    if (newQuantity < 1) return
+    setCart(cart.map(item => item.id === id ? { ...item, quantity: newQuantity } : item))
   }
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen)
   }
 
-  const cartCount = cart.length
+  const cartCount = cart.reduce((total, item) => total + item.quantity, 0)
 
   return (
     <Router>
@@ -69,6 +83,7 @@ function App() {
           onClose={() => setIsCartOpen(false)}
           cart={cart}
           removeFromCart={removeFromCart}
+          updateQuantity={updateQuantity}
         />
         <main>
           <Suspense fallback={<PageLoader />}>
@@ -90,6 +105,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} />} />
             </Routes>
           </Suspense>
         </main>
