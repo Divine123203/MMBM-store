@@ -1,20 +1,30 @@
+import { useState, useEffect } from 'react'
 import ScrollReveal from './ScrollReveal'
 import './ProductSpotlight.css'
 
 const ProductSpotlight = ({ addToCart }) => {
-    const spotlightProduct = {
-        id: 1, // Noir Edition Hoodie from our data
-        name: 'Noir Edition Hoodie',
-        price: '$120.00',
-        image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1200&q=80',
-        category: 'Outerwear',
-        specs: [
-            '450GSM Heavyweight French Terry',
-            'Oversized Drop Shoulder Fit',
-            'Double-Lined Structured Hood',
-            'Signature Metallic Branding'
-        ]
-    }
+    const [spotlightProduct, setSpotlightProduct] = useState(null)
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/products/1')
+            .then(res => res.json())
+            .then(data => {
+                // Add custom specs that aren't in the basic product model
+                setSpotlightProduct({
+                    ...data,
+                    specs: [
+                        '450GSM Heavyweight French Terry',
+                        'Oversized Drop Shoulder Fit',
+                        'Double-Lined Structured Hood',
+                        'Signature Metallic Branding'
+                    ]
+                })
+            })
+            .catch(err => console.error(err))
+    }, [])
+
+    if (!spotlightProduct) return null
+
 
     return (
         <section className="product-spotlight">
@@ -35,7 +45,7 @@ const ProductSpotlight = ({ addToCart }) => {
                     <ScrollReveal variant="fade-left">
                         <div className="spotlight-label">Featured Piece</div>
                         <h2 className="spotlight-title">{spotlightProduct.name}</h2>
-                        <p className="spotlight-price">{spotlightProduct.price}</p>
+                        <p className="spotlight-price">${typeof spotlightProduct.price === 'number' ? spotlightProduct.price.toFixed(2) : spotlightProduct.price}</p>
                     </ScrollReveal>
 
                     <div className="spotlight-specs">

@@ -1,10 +1,91 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import './Login.css'
 
-const Login = () => {
+const Login = ({ setUserInfo }) => {
     const [isLogin, setIsLogin] = useState(true)
+    const navigate = useNavigate()
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [name, setName] = useState('')
+    const [verificationCode, setVerificationCode] = useState('')
+    const [showVerify, setShowVerify] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        setIsLoading(true)
+        try {
+            const res = await fetch('http://localhost:5000/api/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            })
+            const data = await res.json()
+            if (res.ok) {
+                localStorage.setItem('userInfo', JSON.stringify(data))
+                setUserInfo(data)
+                navigate('/')
+            } else {
+                alert(data.message || 'Login failed')
+            }
+        } catch (err) {
+            alert('Something went wrong. Is the server running?')
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleRegister = async (e) => {
+        e.preventDefault()
+        setIsLoading(true)
+        try {
+            const res = await fetch('http://localhost:5000/api/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password }),
+            })
+            const data = await res.json()
+            if (res.ok) {
+                setShowVerify(true)
+                alert('Verification code sent! Please check your email.')
+            } else {
+                alert(data.message || 'Registration failed')
+            }
+        } catch (err) {
+            alert('Something went wrong. Is the server running?')
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleVerify = async (e) => {
+        e.preventDefault()
+        setIsLoading(true)
+        try {
+            const res = await fetch('http://localhost:5000/api/users/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, code: verificationCode }),
+            })
+            const data = await res.json()
+            if (res.ok) {
+                localStorage.setItem('userInfo', JSON.stringify(data))
+                setUserInfo(data)
+                navigate('/')
+            } else {
+                alert(data.message || 'Invalid code')
+            }
+        } catch (err) {
+            console.error('Verify Error:', err)
+            alert('Something went wrong during verification.')
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     const socialIcons = {
         google: (
@@ -68,21 +149,42 @@ const Login = () => {
                                 >
                                     <h1 className="form-greeting">Hello !<br />Welcome Back</h1>
 
-                                    <form className="pill-form" onSubmit={(e) => e.preventDefault()}>
+                                    <form className="pill-form" onSubmit={handleLogin}>
                                         <div className="pill-input-wrap">
-                                            <input type="email" placeholder="Enter Email" required />
+                                            <input
+                                                type="email"
+                                                placeholder="Enter Email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                required
+                                            />
                                             <span className="input-icon">@</span>
                                         </div>
                                         <div className="pill-input-wrap">
-                                            <input type="password" placeholder="********" required />
-                                            <span className="input-icon">🔒</span>
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                placeholder="********"
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                required
+                                            />
+                                            <button
+                                                type="button"
+                                                className="password-toggle"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                aria-label={showPassword ? "Hide password" : "Show password"}
+                                            >
+                                                {showPassword ? "👁️" : "👁️‍🗨️"}
+                                            </button>
                                         </div>
 
                                         <div className="form-utilities">
                                             <button type="button" className="text-btn">Recover Password ?</button>
                                         </div>
 
-                                        <button type="submit" className="btn-pill-submit">Sign In</button>
+                                        <button type="submit" className="btn-pill-submit" disabled={isLoading}>
+                                            {isLoading ? 'Wait...' : 'Sign In'}
+                                        </button>
                                     </form>
 
                                     <div className="social-divider">
@@ -108,24 +210,74 @@ const Login = () => {
                                     transition={{ duration: 0.5 }}
                                     className="form-content"
                                 >
-                                    <h1 className="form-greeting">Join Us !<br />Create Account</h1>
+                                    <h1 className="form-greeting">Join Us !<br />{showVerify ? 'Verify Email' : 'Create Account'}</h1>
 
-                                    <form className="pill-form" onSubmit={(e) => e.preventDefault()}>
-                                        <div className="pill-input-wrap">
-                                            <input type="text" placeholder="Full Name" required />
-                                            <span className="input-icon">👤</span>
-                                        </div>
-                                        <div className="pill-input-wrap">
-                                            <input type="email" placeholder="Enter Email" required />
-                                            <span className="input-icon">@</span>
-                                        </div>
-                                        <div className="pill-input-wrap">
-                                            <input type="password" placeholder="Create Password" required />
-                                            <span className="input-icon">🔒</span>
-                                        </div>
+                                    {!showVerify ? (
+                                        <form className="pill-form" onSubmit={handleRegister}>
+                                            <div className="pill-input-wrap">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Full Name"
+                                                    value={name}
+                                                    onChange={(e) => setName(e.target.value)}
+                                                    required
+                                                />
+                                                <span className="input-icon">👤</span>
+                                            </div>
+                                            <div className="pill-input-wrap">
+                                                <input
+                                                    type="email"
+                                                    placeholder="Enter Email"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    required
+                                                />
+                                                <span className="input-icon">@</span>
+                                            </div>
+                                            <div className="pill-input-wrap">
+                                                <input
+                                                    type={showPassword ? "text" : "password"}
+                                                    placeholder="Create Password"
+                                                    value={password}
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    required
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="password-toggle"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                                >
+                                                    {showPassword ? "👁️" : "👁️‍🗨️"}
+                                                </button>
+                                            </div>
 
-                                        <button type="submit" className="btn-pill-submit">Create Account</button>
-                                    </form>
+                                            <button type="submit" className="btn-pill-submit" disabled={isLoading}>
+                                                {isLoading ? 'Sending...' : 'Create Account'}
+                                            </button>
+                                        </form>
+                                    ) : (
+                                        <form className="pill-form" onSubmit={handleVerify}>
+                                            <p className="verify-instruction">A 6-digit code was sent to <strong>{email}</strong></p>
+                                            <div className="pill-input-wrap">
+                                                <input
+                                                    type="text"
+                                                    placeholder="123456"
+                                                    value={verificationCode}
+                                                    onChange={(e) => setVerificationCode(e.target.value)}
+                                                    maxLength="6"
+                                                    required
+                                                />
+                                                <span className="input-icon">🔑</span>
+                                            </div>
+                                            <button type="submit" className="btn-pill-submit" disabled={isLoading}>
+                                                {isLoading ? 'Verifying...' : 'Verify & Sign In'}
+                                            </button>
+                                            <button type="button" className="text-btn resend-btn" onClick={handleRegister}>
+                                                Didn't get code? Resend
+                                            </button>
+                                        </form>
+                                    )}
 
                                     <div className="social-divider">
                                         <span>Or sign up with</span>

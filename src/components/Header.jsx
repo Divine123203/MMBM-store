@@ -2,12 +2,18 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import './Header.css'
 
-const Header = ({ cartCount, toggleCart }) => {
+const Header = ({ cartCount, toggleCart, userInfo, setUserInfo }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
     const navigate = useNavigate()
     const searchInputRef = useRef(null)
+
+    const handleLogout = () => {
+        localStorage.removeItem('userInfo')
+        setUserInfo(null)
+        navigate('/login')
+    }
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen)
@@ -55,7 +61,16 @@ const Header = ({ cartCount, toggleCart }) => {
                         <li style={{ "--i": 2 }}><Link to="/shop" onClick={() => setIsMenuOpen(false)}>Shop</Link></li>
                         <li style={{ "--i": 3 }}><Link to="/collections" onClick={() => setIsMenuOpen(false)}>Collections</Link></li>
                         <li style={{ "--i": 4 }}><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
-                        <li style={{ "--i": 5 }}><Link to="/login" onClick={() => setIsMenuOpen(false)}>Login</Link></li>
+                        {userInfo ? (
+                            <li style={{ "--i": 5 }}>
+                                <div className="user-nav-item">
+                                    <span className="user-name">Hi, {userInfo.name.split(' ')[0]}</span>
+                                    <button className="logout-link" onClick={handleLogout}>Logout</button>
+                                </div>
+                            </li>
+                        ) : (
+                            <li style={{ "--i": 5 }}><Link to="/login" onClick={() => setIsMenuOpen(false)}>Login</Link></li>
+                        )}
                     </ul>
 
                     <div className="mobile-nav-footer">
@@ -91,10 +106,13 @@ const Header = ({ cartCount, toggleCart }) => {
                     <button className="icon-btn search-btn" aria-label="Search" onClick={toggleSearch}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     </button>
-                    <button className="icon-btn cart-btn" aria-label="Cart" onClick={toggleCart}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                        {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-                    </button>
+
+                    {userInfo && (
+                        <button className="icon-btn cart-btn" aria-label="Cart" onClick={toggleCart}>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+                        </button>
+                    )}
 
                     <button className="mobile-menu-btn" onClick={toggleMenu} aria-label="Toggle Menu">
                         <span className={`hamburger ${isMenuOpen ? 'active' : ''}`}></span>

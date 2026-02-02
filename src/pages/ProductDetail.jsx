@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { allProducts } from '../data/products'
 import ScrollReveal from '../components/ScrollReveal'
 import './ProductDetail.css'
 
@@ -8,17 +7,31 @@ const ProductDetail = ({ addToCart }) => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [product, setProduct] = useState(null)
+    const [loading, setLoading] = useState(true)
     const [quantity, setQuantity] = useState(1)
 
     useEffect(() => {
-        const foundProduct = allProducts.find(p => p.id === parseInt(id))
-        if (foundProduct) {
-            setProduct(foundProduct)
-        } else {
-            navigate('/shop')
+        const fetchProduct = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/products/${id}`)
+                if (response.ok) {
+                    const data = await response.json()
+                    setProduct(data)
+                } else {
+                    navigate('/shop')
+                }
+            } catch (error) {
+                console.error('Error fetching product:', error)
+                navigate('/shop')
+            } finally {
+                setLoading(false)
+            }
         }
+        fetchProduct()
         window.scrollTo(0, 0)
     }, [id, navigate])
+
+    if (loading) return <div className="container" style={{ padding: '100px 0', textAlign: 'center' }}>Loading product...</div>
 
     const handleQuantityChange = (delta) => {
         setQuantity(prev => Math.max(1, prev + delta))

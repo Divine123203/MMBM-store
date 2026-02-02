@@ -1,11 +1,23 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ScrollReveal from './ScrollReveal'
-import { allProducts } from '../data/products'
 import './ProductGrid.css'
 
-const products = allProducts.slice(0, 4) // Show first 4 on home
-
 const ProductGrid = ({ addToCart }) => {
+    const [products, setProducts] = useState([])
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/products')
+                const data = await response.json()
+                setProducts(data.slice(0, 4))
+            } catch (error) {
+                console.error('Error fetching products:', error)
+            }
+        }
+        fetchProducts()
+    }, [])
     return (
         <section className="home-shop-section" id="shop">
             <ScrollReveal>

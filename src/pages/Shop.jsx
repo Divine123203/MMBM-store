@@ -1,14 +1,33 @@
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { allProducts, categories } from '../data/products'
 import './Shop.css'
+import { allProducts } from '../data/products'
 
 const Shop = ({ addToCart }) => {
+    const [products, setProducts] = useState([])
+    const [loading, setLoading] = useState(true)
     const [selectedCategory, setSelectedCategory] = useState('All')
     const [searchParams, setSearchParams] = useSearchParams()
 
     const queryParam = searchParams.get('q') || ''
     const categoryParam = searchParams.get('category')
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/products')
+                if (!response.ok) throw new Error('Server offline')
+                const data = await response.json()
+                setProducts(data)
+                setLoading(false)
+            } catch (error) {
+                console.warn('Using local data fallback:', error)
+                setProducts(allProducts)
+                setLoading(false)
+            }
+        }
+        fetchProducts()
+    }, [])
 
     useEffect(() => {
         if (categoryParam) {
@@ -33,11 +52,15 @@ const Shop = ({ addToCart }) => {
         setSearchParams(params)
     }
 
-    const filteredProducts = allProducts.filter(product => {
+    const categories = ['All', ...new Set(products.map(p => p.category))]
+
+    const filteredProducts = products.filter(product => {
         const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
         return matchesCategory && matchesSearch
     })
+
+    if (loading) return <div className="container" style={{ padding: '100px 0', textAlign: 'center' }}>Loading collections...</div>
 
     return (
         <div className="shop-page">

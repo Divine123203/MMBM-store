@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Hero from './components/Hero'
@@ -20,6 +20,8 @@ const CollectionsLanding = lazy(() => import('./pages/CollectionsLanding'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Login = lazy(() => import('./pages/Login'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
+const Checkout = lazy(() => import('./pages/Checkout'))
+const OrderSuccess = lazy(() => import('./pages/OrderSuccess'))
 
 // Premium loading fallback
 const PageLoader = () => (
@@ -40,8 +42,19 @@ const PageLoader = () => (
 import './index.css'
 
 function App() {
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem('cart')
+    return savedCart ? JSON.parse(savedCart) : []
+  })
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [userInfo, setUserInfo] = useState(() => {
+    const savedUser = localStorage.getItem('userInfo')
+    return savedUser ? JSON.parse(savedUser) : null
+  })
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart))
+  }, [cart])
 
   const addToCart = (product, quantity = 1) => {
     // Check if item already exists with same ID
@@ -77,7 +90,7 @@ function App() {
     <Router>
       <ScrollToTop />
       <div className="app">
-        <Header cartCount={cartCount} toggleCart={toggleCart} />
+        <Header cartCount={cartCount} toggleCart={toggleCart} userInfo={userInfo} setUserInfo={setUserInfo} />
         <CartDrawer
           isOpen={isCartOpen}
           onClose={() => setIsCartOpen(false)}
@@ -104,8 +117,10 @@ function App() {
               <Route path="/collections" element={<CollectionsLanding />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<Login setUserInfo={setUserInfo} />} />
               <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} />} />
+              <Route path="/checkout" element={<Checkout cart={cart} />} />
+              <Route path="/order-success" element={<OrderSuccess />} />
             </Routes>
           </Suspense>
         </main>

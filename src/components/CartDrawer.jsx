@@ -76,7 +76,15 @@ const CartDrawer = ({ isOpen, onClose, cart, removeFromCart, updateQuantity }) =
                         <span>Total</span>
                         <span>${calculateTotal()}</span>
                     </div>
-                    <button className="checkout-btn">Checkout</button>
+                    <button
+                        className="checkout-btn"
+                        onClick={() => {
+                            onClose();
+                            window.location.href = '/checkout';
+                        }}
+                    >
+                        Proceed to Checkout
+                    </button>
                 </div>
             </div>
         </div>

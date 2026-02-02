@@ -74,9 +74,49 @@
 .login-nav-right {
     margin-left: 2rem;
     display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-toggle-group {
+    display: flex;
     background: #111;
     padding: 4px;
     border-radius: 50px;
+    margin-left: 1rem;
+}
+
+.login-nav .icon-btn {
+    background: transparent;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.login-nav .icon-btn:hover {
+    color: #fff;
+}
+
+.login-nav .cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #fff;
+    color: #000;
+    font-size: 0.65rem;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-btn {
@@ -136,6 +176,27 @@
     outline: none;
     border-color: #444;
     background: #151515;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle:hover {
+    color: #fff;
 }
 
 .input-icon {
