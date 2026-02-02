@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import './Checkout.css';
+import { API_BASE_URL } from '../config';
 
 // Replace with your publishable key
 const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
@@ -112,7 +113,7 @@ const Checkout = ({ cart }) => {
     useEffect(() => {
         if (totalAmount > 0) {
             // Create PaymentIntent as soon as the page loads
-            fetch("http://localhost:5000/api/payment/create-payment-intent", {
+            fetch(`${API_BASE_URL}/api/payment/create-payment-intent`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ amount: totalAmount }),

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ScrollReveal from '../components/ScrollReveal'
+import { API_BASE_URL } from '../config'
 import './ProductDetail.css'
 
 const ProductDetail = ({ addToCart }) => {
@@ -13,7 +14,7 @@ const ProductDetail = ({ addToCart }) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/products/${id}`)
+                const response = await fetch(`${API_BASE_URL}/api/products/${id}`)
                 if (response.ok) {
                     const data = await response.json()
                     setProduct(data)

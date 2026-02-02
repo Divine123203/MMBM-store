@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { API_BASE_URL } from '../config'
 import ScrollReveal from './ScrollReveal'
 import './ProductSpotlight.css'
 
@@ -6,7 +8,7 @@ const ProductSpotlight = ({ addToCart }) => {
     const [spotlightProduct, setSpotlightProduct] = useState(null)
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/products/1')
+        fetch(`${API_BASE_URL}/api/products/spotlight`)
             .then(res => res.json())
             .then(data => {
                 // Add custom specs that aren't in the basic product model

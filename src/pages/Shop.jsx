@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { API_BASE_URL } from '../config'
 import './Shop.css'
 import { allProducts } from '../data/products'
 
@@ -15,7 +16,7 @@ const Shop = ({ addToCart }) => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/products')
+                const response = await fetch(`${API_BASE_URL}/api/products`)
                 if (!response.ok) throw new Error('Server offline')
                 const data = await response.json()
                 setProducts(data)

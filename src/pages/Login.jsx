@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import './Login.css'
+import { API_BASE_URL } from '../config'
 
 const Login = ({ setUserInfo }) => {
     const [isLogin, setIsLogin] = useState(true)
@@ -19,7 +20,7 @@ const Login = ({ setUserInfo }) => {
         e.preventDefault()
         setIsLoading(true)
         try {
-            const res = await fetch('http://localhost:5000/api/users/login', {
+            const res = await fetch(`${API_BASE_URL}/api/users/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
@@ -43,7 +44,7 @@ const Login = ({ setUserInfo }) => {
         e.preventDefault()
         setIsLoading(true)
         try {
-            const res = await fetch('http://localhost:5000/api/users', {
+            const res = await fetch(`${API_BASE_URL}/api/users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password }),
@@ -66,7 +67,7 @@ const Login = ({ setUserInfo }) => {
         e.preventDefault()
         setIsLoading(true)
         try {
-            const res = await fetch('http://localhost:5000/api/users/verify', {
+            const res = await fetch(`${API_BASE_URL}/api/users/verify`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, code: verificationCode }),

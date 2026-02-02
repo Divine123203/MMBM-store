@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ScrollReveal from './ScrollReveal'
+import { API_BASE_URL } from '../config'
 import './ProductGrid.css'
 
 const ProductGrid = ({ addToCart }) => {
@@ -9,7 +10,7 @@ const ProductGrid = ({ addToCart }) => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/products')
+                const response = await fetch(`${API_BASE_URL}/api/products`)
                 const data = await response.json()
                 setProducts(data.slice(0, 4))
             } catch (error) {
