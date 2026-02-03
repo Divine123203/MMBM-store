@@ -159,6 +159,13 @@ const resetPassword = asyncHandler(async (req, res) => {
         throw new Error('Reset code has expired');
     }
 
+    // Check if new password is same as old password
+    const isSamePassword = await user.matchPassword(password);
+    if (isSamePassword) {
+        res.status(400);
+        throw new Error('New password cannot be the same as your current password. Please choose a different one.');
+    }
+
     user.password = password;
     user.resetPasswordCode = undefined;
     user.resetPasswordExpires = undefined;
