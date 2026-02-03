@@ -8,6 +8,7 @@
 .checkout-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .checkout-grid {
@@ -20,6 +21,14 @@
     .checkout-grid {
         grid-template-columns: 1fr;
     }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .checkout-page-title {
+        font-size: 1.8rem;
+    }
 }
 
 /* Checkout Page Title */
@@ -30,6 +39,7 @@
     letter-spacing: 2px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 20px;
+    word-wrap: break-word;
 }
 
 .checkout-form-section h2,
@@ -57,6 +67,7 @@
 }
 
 .shipping-form input {
+    width: 100%;
     background: transparent;
     border: 1px solid #333;
     padding: 16px;
@@ -64,6 +75,7 @@
     border-radius: 0;
     font-size: 1rem;
     transition: border-color 0.3s;
+    box-sizing: border-box;
 }
 
 .shipping-form input:focus {
@@ -213,6 +225,7 @@
 .summary-item-name {
     display: block;
     font-weight: 500;
+    word-break: break-word;
 }
 
 .summary-item-qty {
