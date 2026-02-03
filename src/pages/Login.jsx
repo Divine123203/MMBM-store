@@ -121,7 +121,7 @@ const Login = ({ setUserInfo }) => {
                     // Check if it's a registration attempt for an existing user
                     if (!isLoginRef.current && !data.isNewUser) {
                         setIsLogin(true)
-                        showToast('Account already exists. Redirected to Sign In.', 'info')
+                        showToast('Account already exists. Please Sign In.', 'info')
                         setIsLoading(false)
                         return
                     }
