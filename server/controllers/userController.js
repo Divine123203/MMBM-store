@@ -184,8 +184,10 @@ const authGoogleAuth = asyncHandler(async (req, res) => {
     const { name, email, sub } = req.body;
 
     let user = await User.findOne({ email });
+    let isNewUser = false;
 
     if (!user) {
+        isNewUser = true;
         // Create new user if they don't exist
         const randomPassword = Math.random().toString(36).slice(-10);
         user = await User.create({
@@ -202,6 +204,7 @@ const authGoogleAuth = asyncHandler(async (req, res) => {
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
+            isNewUser,
             token: generateToken(user._id),
         });
     } else {

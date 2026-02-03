@@ -114,6 +114,14 @@ const Login = ({ setUserInfo }) => {
                 })
                 const data = await res.json()
                 if (res.ok) {
+                    // Check if it's a registration attempt for an existing user
+                    if (!isLogin && !data.isNewUser) {
+                        setIsLogin(true)
+                        showToast('Account already exists. Redirected to Sign In.', 'info')
+                        setIsLoading(false)
+                        return
+                    }
+
                     localStorage.setItem('userInfo', JSON.stringify(data))
                     setUserInfo(data)
                     showToast(`Welcome ${data.name}!`, 'success')
