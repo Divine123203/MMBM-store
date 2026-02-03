@@ -151,6 +151,36 @@
     text-align: center;
 }
 
+.payment-loading {
+    color: #888;
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.payment-error {
+    color: #ff4d4d;
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 77, 77, 0.1);
+    border-radius: 4px;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
 /* Order Summary */
 .order-summary {
     background: #111;

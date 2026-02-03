@@ -1,7 +1,7 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import './Checkout.css';
@@ -103,48 +103,55 @@ const Checkout = ({ cart }) => {
 
     const parsePrice = (price) => {
         if (typeof price === 'string') {
-            return parseFloat(price.replace('$', ''));
+            return parseFloat(price.replace('$', '')) || 0;
         }
-        return price;
+        return typeof price === 'number' ? price : 0;
     };
 
-    const totalAmount = cart.reduce((total, item) => total + (parsePrice(item.price) * item.quantity), 0);
+    const totalAmount = useState(() => {
+        return cart.reduce((total, item) => total + (parsePrice(item.price) * item.quantity), 0);
+    })[0];
+    // Simplified totalAmount to be stable if cart doesn't change during checkout
+    // Better way:
+    const calculatedTotal = cart.reduce((total, item) => total + (parsePrice(item.price) * item.quantity), 0);
 
     useEffect(() => {
-        if (totalAmount > 0) {
+        if (calculatedTotal > 0) {
             // Create PaymentIntent as soon as the page loads
             fetch(`${API_BASE_URL}/api/payment/create-payment-intent`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount: totalAmount }),
+                body: JSON.stringify({ amount: calculatedTotal }),
             })
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.error) {
                         console.error("Backend Error:", data.error);
-                        alert("Payment initialization failed: " + data.error);
+                        // showToast("Payment initialization failed", 'error'); // If Toast is available
                     } else {
                         setClientSecret(data.clientSecret);
                     }
                 })
                 .catch((err) => console.error("Network Error:", err));
         }
-    }, [totalAmount]);
+    }, [calculatedTotal]);
 
     const handleInputChange = (e) => {
         setShippingInfo({ ...shippingInfo, [e.target.name]: e.target.value });
     };
 
-    const appearance = {
+    // Stabilize appearance and options
+    const appearance = useMemo(() => ({
         theme: 'night',
         variables: {
             colorPrimary: '#cca43b',
         },
-    };
-    const options = {
+    }), []);
+
+    const options = useMemo(() => ({
         clientSecret,
         appearance,
-    };
+    }), [clientSecret, appearance]);
 
     if (cart.length === 0) {
         return (
@@ -200,10 +207,16 @@ const Checkout = ({ cart }) => {
                         </div>
 
                         <div className="payment-gateway-container">
-                            {paymentMethod === 'stripe' && clientSecret && (
-                                <Elements options={options} stripe={stripePromise}>
-                                    <CheckoutForm amount={totalAmount} />
-                                </Elements>
+                            {paymentMethod === 'stripe' && (
+                                !stripeKey ? (
+                                    <div className="payment-error">Stripe Configuration Missing. Please check environment variables.</div>
+                                ) : !clientSecret ? (
+                                    <div className="payment-loading">Initializing Secure Payment...</div>
+                                ) : (
+                                    <Elements options={options} stripe={stripePromise}>
+                                        <CheckoutForm amount={calculatedTotal} />
+                                    </Elements>
+                                )
                             )}
                             {paymentMethod === 'paypal' && (
                                 <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID }}>
