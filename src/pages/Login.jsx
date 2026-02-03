@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGoogleLogin } from '@react-oauth/google'
@@ -10,6 +10,11 @@ const Login = ({ setUserInfo }) => {
     const [isLogin, setIsLogin] = useState(true)
     const navigate = useNavigate()
     const { showToast } = useToast()
+
+    const isLoginRef = useRef(isLogin)
+    useEffect(() => {
+        isLoginRef.current = isLogin
+    }, [isLogin])
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -80,7 +85,6 @@ const Login = ({ setUserInfo }) => {
             if (res.ok) {
                 localStorage.setItem('userInfo', JSON.stringify(data))
                 setUserInfo(data)
-                setUserInfo(data)
                 showToast('Account verified successfully!', 'success')
                 navigate('/')
             } else {
@@ -115,7 +119,7 @@ const Login = ({ setUserInfo }) => {
                 const data = await res.json()
                 if (res.ok) {
                     // Check if it's a registration attempt for an existing user
-                    if (!isLogin && !data.isNewUser) {
+                    if (!isLoginRef.current && !data.isNewUser) {
                         setIsLogin(true)
                         showToast('Account already exists. Redirected to Sign In.', 'info')
                         setIsLoading(false)
