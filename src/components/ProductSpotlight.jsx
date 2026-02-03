@@ -9,7 +9,10 @@ const ProductSpotlight = ({ addToCart }) => {
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/api/products/spotlight`)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error('Failed to fetch spotlight');
+                return res.json();
+            })
             .then(data => {
                 // Add custom specs that aren't in the basic product model
                 setSpotlightProduct({
@@ -20,10 +23,13 @@ const ProductSpotlight = ({ addToCart }) => {
                         'Double-Lined Structured Hood',
                         'Signature Metallic Branding'
                     ]
-                })
+                });
             })
-            .catch(err => console.error(err))
-    }, [])
+            .catch(err => {
+                console.error(err);
+                setSpotlightProduct(null);
+            });
+    }, []);
 
     if (!spotlightProduct) return null
 

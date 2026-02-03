@@ -10,6 +10,18 @@ router.get('/', (req, res) => {
     res.json(products);
 });
 
+// @desc    Fetch spotlight product
+// @route   GET /api/products/spotlight
+// @access  Public
+router.get('/spotlight', (req, res) => {
+    const product = products.find((p) => p.id === 1);
+    if (product) {
+        res.json(product);
+    } else {
+        res.status(404).json({ message: 'Spotlight product not found' });
+    }
+});
+
 // @desc    Fetch single product
 // @route   GET /api/products/:id
 // @access  Public
