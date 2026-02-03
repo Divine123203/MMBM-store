@@ -1,5 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import ProductGrid from './components/ProductGrid'
@@ -90,49 +91,51 @@ function App() {
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0)
 
   return (
-    <ToastProvider>
-      <Router>
-        <ScrollToTop />
-        <div className="app">
-          <Header cartCount={cartCount} toggleCart={toggleCart} userInfo={userInfo} setUserInfo={setUserInfo} />
-          <CartDrawer
-            isOpen={isCartOpen}
-            onClose={() => setIsCartOpen(false)}
-            cart={cart}
-            removeFromCart={removeFromCart}
-            updateQuantity={updateQuantity}
-          />
-          <main>
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                <Route path="/" element={
-                  <>
-                    <Hero />
-                    <ProductSpotlight addToCart={addToCart} />
-                    <FeaturedCategories />
-                    <BrandStory />
-                    <Ticker />
-                    <ProductGrid addToCart={addToCart} />
-                    <Testimonials />
-                    <Newsletter />
-                  </>
-                } />
-                <Route path="/shop" element={<Shop addToCart={addToCart} />} />
-                <Route path="/collections" element={<CollectionsLanding />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/login" element={<Login setUserInfo={setUserInfo} />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} />} />
-                <Route path="/checkout" element={<Checkout cart={cart} />} />
-                <Route path="/order-success" element={<OrderSuccess />} />
-              </Routes>
-            </Suspense>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </ToastProvider>
+    <GoogleOAuthProvider clientId="619316628751-hbanlk6mj5448pnub96gvd8234gvue5q.apps.googleusercontent.com">
+      <ToastProvider>
+        <Router>
+          <ScrollToTop />
+          <div className="app">
+            <Header cartCount={cartCount} toggleCart={toggleCart} userInfo={userInfo} setUserInfo={setUserInfo} />
+            <CartDrawer
+              isOpen={isCartOpen}
+              onClose={() => setIsCartOpen(false)}
+              cart={cart}
+              removeFromCart={removeFromCart}
+              updateQuantity={updateQuantity}
+            />
+            <main>
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={
+                    <>
+                      <Hero />
+                      <ProductSpotlight addToCart={addToCart} />
+                      <FeaturedCategories />
+                      <BrandStory />
+                      <Ticker />
+                      <ProductGrid addToCart={addToCart} />
+                      <Testimonials />
+                      <Newsletter />
+                    </>
+                  } />
+                  <Route path="/shop" element={<Shop addToCart={addToCart} />} />
+                  <Route path="/collections" element={<CollectionsLanding />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/login" element={<Login setUserInfo={setUserInfo} />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} />} />
+                  <Route path="/checkout" element={<Checkout cart={cart} />} />
+                  <Route path="/order-success" element={<OrderSuccess />} />
+                </Routes>
+              </Suspense>
+            </main>
+            <Footer />
+          </div>
+        </Router>
+      </ToastProvider>
+    </GoogleOAuthProvider>
   )
 }
 

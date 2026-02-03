@@ -2,6 +2,9 @@ import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken.js';
 import User from '../models/User.js';
 import sendEmail from '../utils/sendEmail.js';
+import { OAuth2Client } from 'google-auth-library';
+
+const client = new OAuth2Client('619316628751-hbanlk6mj5448pnub96gvd8234gvue5q.apps.googleusercontent.com');
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -174,6 +177,39 @@ const resetPassword = asyncHandler(async (req, res) => {
     res.json({ message: 'Password reset successful. You can now log in.' });
 });
 
+// @desc    Auth with Google (via Frontend Profile)
+// @route   POST /api/users/google-auth
+// @access  Public
+const authGoogleAuth = asyncHandler(async (req, res) => {
+    const { name, email, sub } = req.body;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+        // Create new user if they don't exist
+        const randomPassword = Math.random().toString(36).slice(-10);
+        user = await User.create({
+            name,
+            email,
+            password: randomPassword,
+            isVerified: true, // Google accounts are considered verified
+        });
+    }
+
+    if (user) {
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            token: generateToken(user._id),
+        });
+    } else {
+        res.status(400);
+        throw new Error('Invalid Google account data');
+    }
+});
+
 // Helper function to send email
 const sendVerificationEmail = async (email, name, code) => {
     const message = `Hello ${name},\n\nYour verification code for MMBM Store is: ${code}\n\nPlease enter this code to verify your account.\n\nThank you!`;
@@ -226,4 +262,4 @@ const sendResetEmail = async (email, name, code) => {
     });
 };
 
-export { authUser, registerUser, verifyEmail, forgotPassword, resetPassword };
+export { authUser, registerUser, verifyEmail, forgotPassword, resetPassword, authGoogleAuth };

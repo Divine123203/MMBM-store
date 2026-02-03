@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useGoogleLogin } from '@react-oauth/google'
 import './Login.css'
 import { API_BASE_URL } from '../config'
 import { useToast } from '../context/ToastContext'
@@ -92,6 +93,42 @@ const Login = ({ setUserInfo }) => {
             setIsLoading(false)
         }
     }
+
+    const handleGoogleLogin = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            setIsLoading(true)
+            try {
+                const fetchProfile = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+                })
+                const profile = await fetchProfile.json()
+
+                const res = await fetch(`${API_BASE_URL}/api/users/google-auth`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: profile.name,
+                        email: profile.email,
+                        sub: profile.sub
+                    }),
+                })
+                const data = await res.json()
+                if (res.ok) {
+                    localStorage.setItem('userInfo', JSON.stringify(data))
+                    setUserInfo(data)
+                    showToast(`Welcome ${data.name}!`, 'success')
+                    navigate('/')
+                } else {
+                    showToast(data.message || 'Google Login failed', 'error')
+                }
+            } catch (err) {
+                showToast('Google authentication failed', 'error')
+            } finally {
+                setIsLoading(false)
+            }
+        },
+        onError: () => showToast('Google Login Failed', 'error'),
+    })
 
     const socialIcons = {
         google: (
@@ -200,9 +237,11 @@ const Login = ({ setUserInfo }) => {
                                     </div>
 
                                     <div className="social-logins">
-                                        <button className="social-btn">{socialIcons.google}</button>
-                                        <button className="social-btn">{socialIcons.apple}</button>
-                                        <button className="social-btn">{socialIcons.facebook}</button>
+                                        <button className="social-btn" onClick={() => handleGoogleLogin()} type="button">
+                                            {socialIcons.google}
+                                        </button>
+                                        <button className="social-btn" type="button">{socialIcons.apple}</button>
+                                        <button className="social-btn" type="button">{socialIcons.facebook}</button>
                                     </div>
 
                                     <p className="form-footer-text">
@@ -292,9 +331,11 @@ const Login = ({ setUserInfo }) => {
                                     </div>
 
                                     <div className="social-logins">
-                                        <button className="social-btn">{socialIcons.google}</button>
-                                        <button className="social-btn">{socialIcons.apple}</button>
-                                        <button className="social-btn">{socialIcons.facebook}</button>
+                                        <button className="social-btn" onClick={() => handleGoogleLogin()} type="button">
+                                            {socialIcons.google}
+                                        </button>
+                                        <button className="social-btn" type="button">{socialIcons.apple}</button>
+                                        <button className="social-btn" type="button">{socialIcons.facebook}</button>
                                     </div>
 
                                     <p className="form-footer-text">
