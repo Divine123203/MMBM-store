@@ -19,7 +19,11 @@ app.use(async (req, res, next) => {
         await connectDB();
         next();
     } catch (error) {
-        res.status(500).json({ message: 'Database connection failed' });
+        console.error('Database connection failed middleware:', error.message);
+        res.status(500).json({
+            message: 'Database connection failed',
+            error: error.message
+        });
     }
 });
 const PORT = process.env.PORT || 5000;
