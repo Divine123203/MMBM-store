@@ -113,6 +113,60 @@ const verifyEmail = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Forgot Password (Step 1: Send Reset Code)
+// @route   POST /api/users/forgot-password
+// @access  Public
+const forgotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        res.status(404);
+        throw new Error('No account found with this email.');
+    }
+
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    user.resetPasswordCode = resetCode;
+    user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+    await user.save();
+
+    await sendResetEmail(email, user.name, resetCode);
+
+    res.json({ message: 'Reset code sent to email' });
+});
+
+// @desc    Reset Password (Step 2: Verify Code & Set New Password)
+// @route   POST /api/users/reset-password
+// @access  Public
+const resetPassword = asyncHandler(async (req, res) => {
+    const { email, code, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        res.status(404);
+        throw new Error('User not found');
+    }
+
+    if (!user.resetPasswordCode || user.resetPasswordCode !== code) {
+        res.status(400);
+        throw new Error('Invalid reset code');
+    }
+
+    if (Date.now() > user.resetPasswordExpires) {
+        res.status(400);
+        throw new Error('Reset code has expired');
+    }
+
+    user.password = password;
+    user.resetPasswordCode = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.json({ message: 'Password reset successful. You can now log in.' });
+});
+
 // Helper function to send email
 const sendVerificationEmail = async (email, name, code) => {
     const message = `Hello ${name},\n\nYour verification code for MMBM Store is: ${code}\n\nPlease enter this code to verify your account.\n\nThank you!`;
@@ -139,4 +193,30 @@ const sendVerificationEmail = async (email, name, code) => {
     });
 };
 
-export { authUser, registerUser, verifyEmail };
+// Helper function to send reset email
+const sendResetEmail = async (email, name, code) => {
+    const message = `Hello ${name},\n\nYour password reset code for MMBM Store is: ${code}\n\nPlease enter this code to reset your password.\n\nThank you!`;
+    const html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee;">
+            <h2 style="text-align: center; color: #000;">MMBM Store</h2>
+            <p>Hello <strong>${name}</strong>,</p>
+            <p>You requested a password reset. Your reset code is:</p>
+            <div style="text-align: center; margin: 30px 0;">
+                <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; background: #f4f4f4; padding: 10px 20px; border-radius: 5px;">${code}</span>
+            </div>
+            <p>This code will expire in 10 minutes.</p>
+            <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
+            <hr style="border: none; border-top: 1px solid #eee; margin-top: 30px;">
+            <p style="font-size: 12px; color: #888; text-align: center;">© 2026 MMBM Store. All rights reserved.</p>
+        </div>
+    `;
+
+    await sendEmail({
+        email,
+        subject: 'MMBM Store - Password Reset Request',
+        message,
+        html,
+    });
+};
+
+export { authUser, registerUser, verifyEmail, forgotPassword, resetPassword };

@@ -180,7 +180,9 @@ const Login = ({ setUserInfo }) => {
                                         </div>
 
                                         <div className="form-utilities">
-                                            <button type="button" className="text-btn">Recover Password ?</button>
+                                            <Link to="/forgot-password" style={{ textDecoration: 'none' }}>
+                                                <button type="button" className="text-btn">Recover Password ?</button>
+                                            </Link>
                                         </div>
 
                                         <button type="submit" className="btn-pill-submit" disabled={isLoading}>
