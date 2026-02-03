@@ -61,6 +61,9 @@ const Header = ({ cartCount, toggleCart, userInfo, setUserInfo }) => {
                         <li style={{ "--i": 2 }}><Link to="/shop" onClick={() => setIsMenuOpen(false)}>Shop</Link></li>
                         <li style={{ "--i": 3 }}><Link to="/collections" onClick={() => setIsMenuOpen(false)}>Collections</Link></li>
                         <li style={{ "--i": 4 }}><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
+                        {userInfo && userInfo.isAdmin && (
+                            <li style={{ "--i": 5 }}><Link to="/admin" onClick={() => setIsMenuOpen(false)} className="admin-nav-link">Admin</Link></li>
+                        )}
                         {userInfo ? (
                             <li style={{ "--i": 5 }}>
                                 <div className="user-nav-item">

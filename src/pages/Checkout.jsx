@@ -14,11 +14,12 @@ if (!stripeKey) {
 }
 const stripePromise = loadStripe(stripeKey);
 
-const CheckoutForm = ({ amount }) => {
+const CheckoutForm = ({ amount, cart, shippingInfo }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [message, setMessage] = useState(null);
     const [isProcessing, setIsProcessing] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,13 +39,63 @@ const CheckoutForm = ({ amount }) => {
         if (error) {
             setMessage(error.message);
         } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-            setMessage('Payment Status: ' + paymentIntent.status);
-            // Redirect or show success
-            window.location.href = '/order-success';
+            // Save order to database
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                const orderData = {
+                    orderItems: cart.map(item => ({
+                        name: item.name,
+                        qty: item.quantity,
+                        image: item.image,
+                        price: parseFloat(item.price.toString().replace('$', '')),
+                        id: item.id
+                    })),
+                    shippingAddress: {
+                        address: shippingInfo.address,
+                        city: shippingInfo.city,
+                        postalCode: shippingInfo.zip,
+                        email: shippingInfo.email
+                    },
+                    paymentMethod: 'Stripe',
+                    totalPrice: amount,
+                    paymentResult: {
+                        id: paymentIntent.id,
+                        status: paymentIntent.status,
+                        email_address: userInfo.email
+                    }
+                };
+
+                const res = await fetch(`${API_BASE_URL}/api/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${userInfo.token}`
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (res.ok) {
+                    const createdOrder = await res.json();
+                    // Mark as paid
+                    await fetch(`${API_BASE_URL}/api/orders/${createdOrder._id}/pay`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${userInfo.token}`
+                        },
+                        body: JSON.stringify(paymentIntent)
+                    });
+
+                    localStorage.removeItem('cart');
+                    window.location.href = '/order-success';
+                }
+            } catch (err) {
+                console.error("Order creation failed:", err);
+                setMessage("Payment succeeded, but order recording failed. Please contact support.");
+            }
         } else {
             setMessage('Unexpected state.');
         }
-
 
         setIsProcessing(false);
     };
@@ -214,7 +265,7 @@ const Checkout = ({ cart }) => {
                                     <div className="payment-loading">Initializing Secure Payment...</div>
                                 ) : (
                                     <Elements options={options} stripe={stripePromise}>
-                                        <CheckoutForm amount={calculatedTotal} />
+                                        <CheckoutForm amount={calculatedTotal} cart={cart} shippingInfo={shippingInfo} />
                                     </Elements>
                                 )
                             )}

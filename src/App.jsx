@@ -44,6 +44,8 @@ const PageLoader = () => (
 import './index.css'
 import { ToastProvider } from './context/ToastContext'
 
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
+
 function App() {
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem('cart')
@@ -128,6 +130,7 @@ function App() {
                   <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} />} />
                   <Route path="/checkout" element={<Checkout cart={cart} />} />
                   <Route path="/order-success" element={<OrderSuccess />} />
+                  <Route path="/admin" element={<AdminDashboard />} />
                 </Routes>
               </Suspense>
             </main>
