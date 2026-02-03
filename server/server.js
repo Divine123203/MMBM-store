@@ -31,8 +31,12 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.get('/', (req, res) => {
-    res.send('MMBM Store API is running...');
+app.get('/api/health', (req, res) => {
+    res.json({
+        status: 'ok',
+        db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+        timestamp: new Date().toISOString()
+    });
 });
 
 app.use('/api/products', productRoutes);
