@@ -14,6 +14,16 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+// Ensure DB is connected for every request (Serverless optimization)
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        res.status(500).json({ message: 'Database connection failed' });
+    }
+});
 const PORT = process.env.PORT || 5000;
 
 // Middleware
