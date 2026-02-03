@@ -2,11 +2,14 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { API_BASE_URL } from '../config'
+import { useToast } from '../context/ToastContext'
 import './Login.css' // Reusing the high-fashion login styles
 
 const ForgotPassword = () => {
     const navigate = useNavigate()
+    const { showToast } = useToast()
     const [email, setEmail] = useState('')
+    // ... rest of state
     const [code, setCode] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [showReset, setShowReset] = useState(false)
@@ -25,12 +28,12 @@ const ForgotPassword = () => {
             const data = await res.json()
             if (res.ok) {
                 setShowReset(true)
-                alert('Reset code sent to your email!')
+                showToast('Reset code sent to your email!', 'success')
             } else {
-                alert(data.message || 'Failed to send reset code')
+                showToast(data.message || 'Failed to send reset code', 'error')
             }
         } catch (err) {
-            alert('Something went wrong. Is the server running?')
+            showToast('Something went wrong. Please try again.', 'error')
         } finally {
             setIsLoading(false)
         }
@@ -47,13 +50,13 @@ const ForgotPassword = () => {
             })
             const data = await res.json()
             if (res.ok) {
-                alert('Password reset successful! You can now log in.')
+                showToast('Password reset successful!', 'success')
                 navigate('/login')
             } else {
-                alert(data.message || 'Reset failed')
+                showToast(data.message || 'Reset failed', 'error')
             }
         } catch (err) {
-            alert('Something went wrong. Reset failed.')
+            showToast('Something went wrong. Reset failed.', 'error')
         } finally {
             setIsLoading(false)
         }

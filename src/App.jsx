@@ -41,12 +41,14 @@ const PageLoader = () => (
   </div>
 )
 import './index.css'
+import { ToastProvider } from './context/ToastContext'
 
 function App() {
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem('cart')
     return savedCart ? JSON.parse(savedCart) : []
   })
+  // ... rest of state stays same
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [userInfo, setUserInfo] = useState(() => {
     const savedUser = localStorage.getItem('userInfo')
@@ -88,47 +90,49 @@ function App() {
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0)
 
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="app">
-        <Header cartCount={cartCount} toggleCart={toggleCart} userInfo={userInfo} setUserInfo={setUserInfo} />
-        <CartDrawer
-          isOpen={isCartOpen}
-          onClose={() => setIsCartOpen(false)}
-          cart={cart}
-          removeFromCart={removeFromCart}
-          updateQuantity={updateQuantity}
-        />
-        <main>
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={
-                <>
-                  <Hero />
-                  <ProductSpotlight addToCart={addToCart} />
-                  <FeaturedCategories />
-                  <BrandStory />
-                  <Ticker />
-                  <ProductGrid addToCart={addToCart} />
-                  <Testimonials />
-                  <Newsletter />
-                </>
-              } />
-              <Route path="/shop" element={<Shop addToCart={addToCart} />} />
-              <Route path="/collections" element={<CollectionsLanding />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login setUserInfo={setUserInfo} />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} />} />
-              <Route path="/checkout" element={<Checkout cart={cart} />} />
-              <Route path="/order-success" element={<OrderSuccess />} />
-            </Routes>
-          </Suspense>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <ToastProvider>
+      <Router>
+        <ScrollToTop />
+        <div className="app">
+          <Header cartCount={cartCount} toggleCart={toggleCart} userInfo={userInfo} setUserInfo={setUserInfo} />
+          <CartDrawer
+            isOpen={isCartOpen}
+            onClose={() => setIsCartOpen(false)}
+            cart={cart}
+            removeFromCart={removeFromCart}
+            updateQuantity={updateQuantity}
+          />
+          <main>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={
+                  <>
+                    <Hero />
+                    <ProductSpotlight addToCart={addToCart} />
+                    <FeaturedCategories />
+                    <BrandStory />
+                    <Ticker />
+                    <ProductGrid addToCart={addToCart} />
+                    <Testimonials />
+                    <Newsletter />
+                  </>
+                } />
+                <Route path="/shop" element={<Shop addToCart={addToCart} />} />
+                <Route path="/collections" element={<CollectionsLanding />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/login" element={<Login setUserInfo={setUserInfo} />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} />} />
+                <Route path="/checkout" element={<Checkout cart={cart} />} />
+                <Route path="/order-success" element={<OrderSuccess />} />
+              </Routes>
+            </Suspense>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </ToastProvider>
   )
 }
 

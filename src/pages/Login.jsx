@@ -3,10 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import './Login.css'
 import { API_BASE_URL } from '../config'
+import { useToast } from '../context/ToastContext'
 
 const Login = ({ setUserInfo }) => {
     const [isLogin, setIsLogin] = useState(true)
     const navigate = useNavigate()
+    const { showToast } = useToast()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -29,12 +31,13 @@ const Login = ({ setUserInfo }) => {
             if (res.ok) {
                 localStorage.setItem('userInfo', JSON.stringify(data))
                 setUserInfo(data)
+                showToast('Welcome back!', 'success')
                 navigate('/')
             } else {
-                alert(data.message || 'Login failed')
+                showToast(data.message || 'Login failed', 'error')
             }
         } catch (err) {
-            alert('Something went wrong. Is the server running?')
+            showToast('Something went wrong. Please try again.', 'error')
         } finally {
             setIsLoading(false)
         }
@@ -52,12 +55,12 @@ const Login = ({ setUserInfo }) => {
             const data = await res.json()
             if (res.ok) {
                 setShowVerify(true)
-                alert('Verification code sent! Please check your email.')
+                showToast('Verification code sent! Check your email.', 'success')
             } else {
-                alert(data.message || 'Registration failed')
+                showToast(data.message || 'Registration failed', 'error')
             }
         } catch (err) {
-            alert('Something went wrong. Is the server running?')
+            showToast('Connection error. Please try again.', 'error')
         } finally {
             setIsLoading(false)
         }
@@ -76,13 +79,15 @@ const Login = ({ setUserInfo }) => {
             if (res.ok) {
                 localStorage.setItem('userInfo', JSON.stringify(data))
                 setUserInfo(data)
+                setUserInfo(data)
+                showToast('Account verified successfully!', 'success')
                 navigate('/')
             } else {
-                alert(data.message || 'Invalid code')
+                showToast(data.message || 'Invalid code', 'error')
             }
         } catch (err) {
             console.error('Verify Error:', err)
-            alert('Something went wrong during verification.')
+            showToast('Something went wrong during verification.', 'error')
         } finally {
             setIsLoading(false)
         }
