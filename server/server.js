@@ -11,8 +11,6 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
 
-connectDB();
-
 const app = express();
 
 // Ensure DB is connected for every request (Serverless optimization)
