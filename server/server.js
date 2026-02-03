@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import products from './data/products.js';
 
 import productRoutes from './routes/productRoutes.js';
@@ -33,12 +34,21 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.get('/api/health', (req, res) => {
-    res.json({
-        status: 'ok',
-        db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-        timestamp: new Date().toISOString()
-    });
+app.get('/api/health', async (req, res) => {
+    try {
+        await connectDB();
+        res.json({
+            status: 'ok',
+            db: mongoose.connection.readyState === 1 ? 'connected' : 'connecting',
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Database connection failed in health check',
+            error: error.message
+        });
+    }
 });
 
 app.use('/api/products', productRoutes);
